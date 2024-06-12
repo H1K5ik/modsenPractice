@@ -3,6 +3,13 @@ import { IsOptional, MinLength } from 'class-validator';
 
 export class MeetupDto {
   @ApiProperty({
+    example: 'There is ur meetup id',
+    required: true,
+  })
+  @IsOptional()
+  id: number;
+
+  @ApiProperty({
     example: 'There is ur best title',
     required: true,
   })
@@ -26,10 +33,23 @@ export class MeetupDto {
   tags: string;
 
   @ApiProperty({
+    example: 'There is ur date',
+    required: true,
+  })
+  @IsOptional()
+  date: Date;
+
+  @ApiProperty({
     example: 'There is ur best place',
     required: true,
   })
   @IsOptional()
   @MinLength(6)
   place: string;
+  @ApiProperty({
+    example: 'There is ur id',
+    required: true,
+  })
+  @IsOptional()
+  authorId: number;
 }
