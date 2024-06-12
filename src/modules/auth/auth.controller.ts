@@ -12,6 +12,7 @@ import { Request, Response } from 'express';
 import { JwtAuthGuard } from './guards/jwt-auth.guard';
 import { AuthDto } from './dto/auth.dto';
 import { ApiBody, ApiResponse, ApiTags } from '@nestjs/swagger';
+import { UserDto } from './dto/user.dto';
 
 @ApiTags('auth')
 @Controller('auth')
@@ -28,7 +29,7 @@ export class AuthController {
     description: 'Json structure for user object',
   })
   @Post('register')
-  async register(@Body() dto: AuthDto) {
+  async register(@Body() dto: AuthDto): Promise<UserDto> {
     return await this.authService.register(dto);
   }
 
@@ -44,7 +45,7 @@ export class AuthController {
   @Post('login')
   async login(@Body() dto: AuthDto, @Res({ passthrough: true }) res: Response) {
     const access_token = await this.authService.login(dto);
-    res.cookie('Token', access_token.access_token);
+    res.cookie('Token', access_token);
   }
 
   @ApiResponse({
