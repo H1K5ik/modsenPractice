@@ -60,7 +60,7 @@ export class MeetupService {
     dto: MeetupDto,
   ): Promise<MeetupDto> {
     const oldPost = await this.prisma.meetup.findUnique({
-      where: { id: id },
+      where: { id: +id },
     });
     if (!(oldPost.authorId == userId))
       throw new ForbiddenException(`You're not the author of the meetap`);
