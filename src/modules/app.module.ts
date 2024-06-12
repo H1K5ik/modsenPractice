@@ -1,7 +1,8 @@
 import { Module } from '@nestjs/common';
+import { MeetupModule } from '../meetup/meetup.module';
 
 @Module({
-  imports: [],
+  imports: [MeetupModule],
   controllers: [],
   providers: [],
 })
