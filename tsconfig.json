@@ -19,10 +19,10 @@
     "noFallthroughCasesInSwitch": false,
     "paths": {
       "@decorators": [
-        "src/decorators"
+        "src/libs/decorators"
       ],
       "@decorators/*": [
-        "src/decorators/*"
+        "src/libs/decorators/*"
       ]
     }
   }

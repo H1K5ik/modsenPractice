@@ -14,15 +14,16 @@ import { MeetupDto } from './dto/meetup.dto';
 import { QueryDto } from './dto/query.dto';
 import { ApiBody, ApiResponse, ApiTags } from '@nestjs/swagger';
 import { JwtAuthGuard } from '../auth/guards/jwt-auth.guard';
-import { GetUserId } from '@decorators/userid.decorator';
+import { GetUserId } from 'src/libs/decorators/userid.decorator';
 import { RolesGuard } from '../auth/guards/roles.guard';
-import { Roles } from '@decorators/roles.decorator';
+import { Roles } from 'src/libs/decorators/roles.decorator';
 
 @ApiTags('meetup')
 @Controller('meetup')
 @UseGuards(JwtAuthGuard)
 export class MeetupController {
   constructor(private readonly meetupService: MeetupService) {}
+
   @ApiResponse({
     status: 200,
     description: 'Meetups has been successfully created. found found',
@@ -80,6 +81,7 @@ export class MeetupController {
   ): Promise<MeetupDto> {
     return await this.meetupService.changeMeetup(userId, id, dto);
   }
+
   @ApiResponse({
     status: 200,
     description: 'The meetup has been successfully deleted.',

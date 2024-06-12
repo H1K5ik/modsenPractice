@@ -4,7 +4,7 @@ import {
   Injectable,
   NotFoundException,
 } from '@nestjs/common';
-import { PrismaService } from 'src/libs/prisma/prisma/prisma.service';
+import { PrismaService } from 'src/libs/prisma/prisma.service';
 import { MeetupDto } from './dto/meetup.dto';
 import { QueryDto } from './dto/query.dto';
 
@@ -42,6 +42,7 @@ export class MeetupService {
         tags: dto.tags,
         place: dto.place,
         authorId: id,
+        date: dto.date,
       },
     });
 

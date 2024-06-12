@@ -2,7 +2,7 @@ import { Injectable, CanActivate, ExecutionContext } from '@nestjs/common';
 import { Reflector } from '@nestjs/core';
 import { Role } from '@prisma/client';
 import { JwtService } from '@nestjs/jwt';
-import { ROLES_KEY } from '@decorators/roles.decorator';
+import { ROLES_KEY } from 'src/libs/decorators/roles.decorator';
 
 @Injectable()
 export class RolesStrategy implements CanActivate {

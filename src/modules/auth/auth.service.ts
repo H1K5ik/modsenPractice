@@ -5,7 +5,7 @@ import {
 } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 import * as bcrypt from 'bcrypt';
-import { PrismaService } from 'src/libs/prisma/prisma/prisma.service';
+import { PrismaService } from 'src/libs/prisma/prisma.service';
 import { AuthDto } from './dto/auth.dto';
 import { UserDto } from './dto/user.dto';
 
@@ -21,7 +21,8 @@ export class AuthService {
     const thisUser = await this.prisma.user.findUnique({
       where: { email: user.email },
     });
-    if (thisUser) throw new BadRequestException('User sushestvuet');
+
+    if (thisUser) throw new BadRequestException('User exists');
 
     const userName = user.email.split('@')[0];
     return await this.prisma.user.create({
@@ -43,7 +44,7 @@ export class AuthService {
       where: { email: user.email },
     });
 
-    if (!thisUser) throw new BadRequestException('User ne sushestvuet');
+    if (!thisUser) throw new BadRequestException('User does not exist');
 
     const passwordMatch = await bcrypt.compare(
       user.password,
@@ -51,18 +52,21 @@ export class AuthService {
     );
 
     if (!passwordMatch) {
-      throw new NotFoundException('Не верный пароль!');
+      throw new NotFoundException('Incorrect password');
     }
+
     const payload = {
       email: thisUser.email,
       sub: thisUser.id,
       roles: thisUser.roles,
     };
     const refreshToken = this.jwtService.sign(payload, { expiresIn: '15d' });
+
     await this.prisma.user.update({
       where: { email: user.email },
       data: { Token: refreshToken },
     });
+
     return this.jwtService.sign(payload, { expiresIn: '1d' });
   }
 
@@ -79,6 +83,7 @@ export class AuthService {
       roles: user.roles,
     };
     const refreshToken = this.jwtService.sign(payload, { expiresIn: '15d' });
+
     await this.prisma.user.update({
       where: { email: user.email },
       data: { Token: refreshToken },
