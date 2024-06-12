@@ -14,19 +14,19 @@ datasource db {
 }
 
 model User {
-  id    Int     @id @default(autoincrement())
-  email String  @unique
-  name  String?
-  posts Post[]
+  id      Int      @id @default(autoincrement())
+  email   String   @unique
+  name    String?
+  meetups Meetup[]
 }
 
-model Post {
+model Meetup {
   id          Int      @id @default(autoincrement())
   title       String
   description String?
   tags        String?
-  date        DateTime
-  place       String
+  date        DateTime @default(now())
+  place       String   @default("ofice")
   author      User?    @relation(fields: [authorId], references: [id])
   authorId    Int?
 }
