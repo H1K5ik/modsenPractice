@@ -2,6 +2,7 @@ import { PassportStrategy } from '@nestjs/passport';
 import { Request } from 'express';
 import { ExtractJwt, Strategy } from 'passport-jwt';
 import * as process from 'node:process';
+import { PayloadDto } from '../dto/payload.dto';
 
 export class JwtStrategy extends PassportStrategy(Strategy) {
   constructor() {
@@ -22,7 +23,7 @@ export class JwtStrategy extends PassportStrategy(Strategy) {
     });
   }
 
-  async validate(payload: any) {
+  async validate(payload: PayloadDto) {
     return {
       userId: payload.sub,
       email: payload.email,
