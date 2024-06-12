@@ -1,11 +1,10 @@
 import {
   BadRequestException,
-  ForbiddenException,
   Injectable,
   NotFoundException,
 } from '@nestjs/common';
-import { NotFoundError } from 'rxjs';
 import { PrismaService } from 'src/libs/prisma/prisma/prisma.service';
+import { MeetupDto } from './dto/meetup.dto';
 
 @Injectable()
 export class MeetupService {
@@ -20,13 +19,13 @@ export class MeetupService {
       throw new NotFoundException(`Net takogo meetupa or id not correct`);
     }
   }
-  async createMeetup(id: number, dto: any) {
+  async createMeetup(id: number, dto: MeetupDto) {
     const meetup = await this.prisma.meetup.create({
       data: {
         title: dto.title,
-        authorId: id,
         description: dto.description,
         tags: dto.tags,
+        place: dto.place,
       },
     });
 
@@ -34,7 +33,7 @@ export class MeetupService {
 
     return meetup;
   }
-  async changeMeetup(id: number, dto: any) {
+  async changeMeetup(id: number, dto: MeetupDto) {
     try {
       return await this.prisma.meetup.update({
         where: { id: +id },
@@ -42,6 +41,7 @@ export class MeetupService {
           title: dto.title,
           description: dto.description,
           tags: dto.tags,
+          place: dto.place,
         },
       });
     } catch (erorr) {

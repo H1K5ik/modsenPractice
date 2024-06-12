@@ -8,6 +8,7 @@ import {
   Post,
 } from '@nestjs/common';
 import { MeetupService } from './meetup.service';
+import { MeetupDto } from './dto/meetup.dto';
 
 @Controller('meetup')
 export class MeetupController {
@@ -23,12 +24,12 @@ export class MeetupController {
   }
 
   @Post('create')
-  async ceateMeetup(@Param('id') id: number, @Body() dto: any) {
+  async ceateMeetup(@Param('id') id: number, @Body() dto: MeetupDto) {
     return await this.meetupService.createMeetup(id, dto);
   }
 
   @Patch('change/:id')
-  async changeMeetup(@Param('id') id: number, @Body() dto: any) {
+  async changeMeetup(@Param('id') id: number, @Body() dto: MeetupDto) {
     return await this.meetupService.changeMeetup(id, dto);
   }
 
