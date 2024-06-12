@@ -11,21 +11,25 @@ import { QueryDto } from './dto/query.dto';
 export class MeetupService {
   constructor(private readonly prisma: PrismaService) {}
   async getAllMeetups(query: QueryDto) {
-    const { title, page = 2, pageSize = 3 } = query;
-    const skip = (page - 1) * pageSize;
-    const meetups = await this.prisma.meetup.findMany({
-      where: { title },
-      skip,
-      take: +pageSize,
-    });
-    const total = await this.prisma.meetup.count({ where: { title } });
+    try {
+      const { title, page = 2, pageSize = 3 } = query;
+      const skip = (page - 1) * pageSize;
+      const meetups = await this.prisma.meetup.findMany({
+        where: { title },
+        skip,
+        take: +pageSize,
+      });
+      const total = await this.prisma.meetup.count({ where: { title } });
 
-    return {
-      data: meetups,
-      total,
-      page,
-      pageSize,
-    };
+      return {
+        data: meetups,
+        total,
+        page,
+        pageSize,
+      };
+    } catch (erorr) {
+      throw new NotFoundException(`Net takogo meetupa or id not correct`);
+    }
   }
 
   async getMeeupById(id: number) {
