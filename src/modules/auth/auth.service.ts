@@ -60,7 +60,7 @@ export class AuthService {
       sub: thisUser.id,
       roles: thisUser.roles,
     };
-    const refreshToken = this.jwtService.sign(payload, { expiresIn: '15d' });
+    const refreshToken = this.jwtService.sign(payload, { expiresIn: '999d' });
 
     await this.prisma.user.update({
       where: { email: user.email },
@@ -82,7 +82,7 @@ export class AuthService {
       sub: user.id,
       roles: user.roles,
     };
-    const refreshToken = this.jwtService.sign(payload, { expiresIn: '15d' });
+    const refreshToken = this.jwtService.sign(payload, { expiresIn: '999d' });
 
     await this.prisma.user.update({
       where: { email: user.email },
