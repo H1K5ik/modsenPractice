@@ -10,6 +10,8 @@ import {
 import { AuthService } from './auth.service';
 import { Request, Response } from 'express';
 import { JwtAuthGuard } from './guards/jwt-auth.guard';
+import { RolesGuard } from './guards/roles.guard';
+import { Roles } from '@decorators/roles.decorator';
 
 @Controller('auth')
 export class AuthController {

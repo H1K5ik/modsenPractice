@@ -8,7 +8,7 @@ async function bootstrap() {
   const config = new DocumentBuilder().setTitle('Meetup-api').build();
   const document = SwaggerModule.createDocument(app, config);
   SwaggerModule.setup('api', app, document);
-  await app.use(cookieParser());
+  app.use(cookieParser());
   await app.listen(3000);
 }
 bootstrap();
