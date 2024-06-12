@@ -6,16 +6,18 @@ import {
   Param,
   Patch,
   Post,
+  Query,
 } from '@nestjs/common';
 import { MeetupService } from './meetup.service';
 import { MeetupDto } from './dto/meetup.dto';
+import { QueryDto } from './dto/query.dto';
 
 @Controller('meetup')
 export class MeetupController {
   constructor(private readonly meetupService: MeetupService) {}
   @Get()
-  async getAllMeetups() {
-    return await this.meetupService.getAllMeetups();
+  async getAllMeetups(@Query() query: QueryDto) {
+    return await this.meetupService.getAllMeetups(query);
   }
 
   @Get(':id')

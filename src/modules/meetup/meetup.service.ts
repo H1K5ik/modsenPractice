@@ -5,13 +5,29 @@ import {
 } from '@nestjs/common';
 import { PrismaService } from 'src/libs/prisma/prisma/prisma.service';
 import { MeetupDto } from './dto/meetup.dto';
+import { QueryDto } from './dto/query.dto';
 
 @Injectable()
 export class MeetupService {
   constructor(private readonly prisma: PrismaService) {}
-  async getAllMeetups() {
-    return this.prisma.meetup.findMany();
+  async getAllMeetups(query: QueryDto) {
+    const { title, page = 2, pageSize = 3 } = query;
+    const skip = (page - 1) * pageSize;
+    const meetups = await this.prisma.meetup.findMany({
+      where: { title },
+      skip,
+      take: +pageSize,
+    });
+    const total = await this.prisma.meetup.count({ where: { title } });
+
+    return {
+      data: meetups,
+      total,
+      page,
+      pageSize,
+    };
   }
+
   async getMeeupById(id: number) {
     try {
       return await this.prisma.meetup.findUnique({ where: { id: +id } });
@@ -19,6 +35,7 @@ export class MeetupService {
       throw new NotFoundException(`Net takogo meetupa or id not correct`);
     }
   }
+
   async createMeetup(id: number, dto: MeetupDto) {
     const meetup = await this.prisma.meetup.create({
       data: {
@@ -48,6 +65,7 @@ export class MeetupService {
       throw new NotFoundException(`Net takogo meetupa or data incorrect`);
     }
   }
+
   async deleteMeetup(id: number) {
     const meetup = await this.prisma.meetup.findUnique({ where: { id: +id } });
 
