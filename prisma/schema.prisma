@@ -14,10 +14,13 @@ datasource db {
 }
 
 model User {
-  id      Int      @id @default(autoincrement())
-  email   String   @unique
-  name    String?
-  meetups Meetup[]
+  id       Int      @id @default(autoincrement())
+  email    String   @unique
+  password String
+  name     String?
+  Token    String?
+  roles    Role     @default(User)
+  meetups  Meetup[]
 }
 
 model Meetup {
@@ -29,4 +32,9 @@ model Meetup {
   place       String   @default("ofice")
   author      User?    @relation(fields: [authorId], references: [id])
   authorId    Int?
+}
+
+enum Role {
+  Admin
+  User
 }
