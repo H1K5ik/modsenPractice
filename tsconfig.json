@@ -35,6 +35,12 @@
       ],
       "@prisma/*": [
         "src/libs/prisma/*"
+      ],
+      "@modules": [
+        "src/modules"
+      ],
+      "@modules/*": [
+        "src/modules/*"
       ]
     }
   }
