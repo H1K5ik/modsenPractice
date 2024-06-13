@@ -27,7 +27,7 @@ export class MeetupController {
   @ApiResponseAndBody('getMeetupById')
   @Get(':id')
   async getMeetupById(@Param('id') id: number): Promise<MeetupDto> {
-    return await this.meetupService.getMeeupById(id);
+    return await this.meetupService.getMeetupById(id);
   }
 
   @ApiResponseAndBody('createMeetup')

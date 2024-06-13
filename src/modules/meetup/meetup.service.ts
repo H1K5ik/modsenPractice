@@ -14,21 +14,20 @@ export class MeetupService {
     try {
       const { title, page = 2, pageSize = 3 } = query;
       const skip = (page - 1) * pageSize;
-      const meetups = await this.prisma.meetup.findMany({
+      return await this.prisma.meetup.findMany({
         where: { title },
         skip,
         take: +pageSize,
       });
-      return meetups;
-    } catch (erorr) {
+    } catch (error) {
       throw new NotFoundException(`The meetup not found or the id is wrong`);
     }
   }
 
-  async getMeeupById(id: number): Promise<MeetupDto> {
+  async getMeetupById(id: number): Promise<MeetupDto> {
     try {
       return await this.prisma.meetup.findUnique({ where: { id: +id } });
-    } catch (erorr) {
+    } catch (error) {
       throw new NotFoundException(`The meetup not found or the id is wrong`);
     }
   }
@@ -45,7 +44,7 @@ export class MeetupService {
       },
     });
 
-    if (!meetup) throw new BadRequestException('Meetap has not been created');
+    if (!meetup) throw new BadRequestException('Meetup has not been created');
     await this.prisma.user.update({
       where: { id: id },
       data: { roles: 'Admin' },
@@ -62,7 +61,7 @@ export class MeetupService {
       where: { id: +id },
     });
     if (!(oldPost.authorId == userId))
-      throw new ForbiddenException(`You're not the author of the meetap`);
+      throw new ForbiddenException(`You're not the author of the meetup`);
     try {
       return await this.prisma.meetup.update({
         where: { id: +id },
@@ -73,7 +72,7 @@ export class MeetupService {
           place: dto.place,
         },
       });
-    } catch (erorr) {
+    } catch (error) {
       throw new NotFoundException(`The meetup not found or the id is wrong`);
     }
   }
@@ -82,7 +81,7 @@ export class MeetupService {
     const meetup = await this.prisma.meetup.findUnique({ where: { id: +id } });
 
     if (!(meetup.authorId == userId))
-      throw new ForbiddenException(`You're not the author of the meetap`);
+      throw new ForbiddenException(`You're not the author of the meetup`);
 
     if (!meetup)
       throw new NotFoundException(`The meetup not found or the id is wrong`);

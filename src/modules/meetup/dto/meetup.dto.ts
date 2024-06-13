@@ -46,6 +46,7 @@ export class MeetupDto {
   @IsOptional()
   @MinLength(6)
   place: string;
+
   @ApiProperty({
     example: 'There is ur id',
     required: true,
