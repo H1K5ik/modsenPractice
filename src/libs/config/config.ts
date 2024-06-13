@@ -1,10 +1,18 @@
-import { applyDecorators, Controller, UseGuards } from '@nestjs/common';
-import { ApiBody, ApiResponse, ApiTags } from '@nestjs/swagger';
+import { applyDecorators, Controller, INestApplication, UseGuards } from "@nestjs/common";
+import { ApiBody, ApiResponse, ApiTags, DocumentBuilder, SwaggerModule } from "@nestjs/swagger";
 import { JwtAuthGuard } from '../../modules/auth/guards/jwt-auth.guard';
 import { AuthDto } from '../../modules/auth/dto/auth.dto';
 import { MeetupDto } from '../../modules/meetup/dto/meetup.dto';
 import { RolesGuard } from '../../modules/auth/guards/roles.guard';
 import { Roles } from '@decorators/roles.decorator';
+
+export class Config {
+  static initialize(app: INestApplication) {
+    const config = new DocumentBuilder().setTitle('News-api').build();
+    const document = SwaggerModule.createDocument(app, config);
+    SwaggerModule.setup('api', app, document);
+  }
+}
 
 export function ApiResponseAndBody(type: string) {
   switch (type) {
