@@ -4,9 +4,8 @@ import {
   Injectable,
   NotFoundException,
 } from '@nestjs/common';
-import { PrismaService } from 'src/libs/prisma/prisma.service';
-import { MeetupDto } from './dto/meetup.dto';
-import { QueryDto } from './dto/query.dto';
+import { MeetupDto, QueryDto } from './dto';
+import { PrismaService } from '@prisma/prisma.service';
 
 @Injectable()
 export class MeetupService {

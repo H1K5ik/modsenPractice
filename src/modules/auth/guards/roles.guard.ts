@@ -1,5 +1,5 @@
 import { Injectable } from '@nestjs/common';
-import { RolesStrategy } from '../strategies/roles.strategy';
+import { RolesStrategy } from '../strategies';
 
 @Injectable()
 export class RolesGuard extends RolesStrategy {}

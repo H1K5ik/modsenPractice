@@ -5,9 +5,8 @@ import {
 } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 import * as bcrypt from 'bcrypt';
-import { PrismaService } from 'src/libs/prisma/prisma.service';
-import { AuthDto } from './dto/auth.dto';
-import { UserDto } from './dto/user.dto';
+import { AuthDto, UserDto } from './dto';
+import { PrismaService } from '@prisma/prisma.service';
 
 @Injectable()
 export class AuthService {
@@ -25,7 +24,7 @@ export class AuthService {
     if (thisUser) throw new BadRequestException('User exists');
 
     const userName = user.email.split('@')[0];
-    return await this.prisma.user.create({
+    return this.prisma.user.create({
       data: {
         email: user.email,
         password: hashedPassword,

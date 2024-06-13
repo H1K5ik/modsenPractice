@@ -2,7 +2,7 @@ import { PassportStrategy } from '@nestjs/passport';
 import { Request } from 'express';
 import { ExtractJwt, Strategy } from 'passport-jwt';
 import * as process from 'node:process';
-import { PayloadDto } from '../dto/payload.dto';
+import { PayloadDto } from '../dto';
 
 export class JwtStrategy extends PassportStrategy(Strategy) {
   constructor() {

@@ -23,6 +23,18 @@
       ],
       "@decorators/*": [
         "src/libs/decorators/*"
+      ],
+      "@config": [
+        "src/libs/config"
+      ],
+      "@config/*": [
+        "src/libs/config/*"
+      ],
+      "@prisma": [
+        "src/libs/prisma"
+      ],
+      "@prisma/*": [
+        "src/libs/prisma/*"
       ]
     }
   }

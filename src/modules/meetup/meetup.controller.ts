@@ -9,10 +9,9 @@ import {
   Query,
 } from '@nestjs/common';
 import { MeetupService } from './meetup.service';
-import { MeetupDto } from './dto/meetup.dto';
-import { QueryDto } from './dto/query.dto';
-import { GetUserId } from 'src/libs/decorators/userid.decorator';
-import { ApiResponseAndBody } from '../../libs/config/config';
+import { MeetupDto, QueryDto } from './dto';
+import { ApiResponseAndBody } from '@config/config';
+import { GetUserId } from '@decorators/userid.decorator';
 
 @ApiResponseAndBody('meetup')
 @Controller('meetup')

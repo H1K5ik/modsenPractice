@@ -1,10 +1,9 @@
 import { Body, Controller, Get, Post, Req, Res } from '@nestjs/common';
 import { AuthService } from './auth.service';
 import { Request, Response } from 'express';
-import { AuthDto } from './dto/auth.dto';
 import { ApiTags } from '@nestjs/swagger';
-import { UserDto } from './dto/user.dto';
-import { ApiResponseAndBody } from '../../libs/config/config';
+import { AuthDto, UserDto } from './dto';
+import { ApiResponseAndBody } from '@config/config';
 
 @ApiTags('auth')
 @Controller('auth')
