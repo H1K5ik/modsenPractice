@@ -25,7 +25,8 @@ export class AuthController {
 
   @ApiResponseAndBody('update-tokens')
   @Get('update-tokens')
-  update(@Req() req: Request) {
-    return this.authService.updateTokens(req.cookies.Token);
+  async update(@Req() req: Request, @Res({ passthrough: true }) res: Response) {
+    const access_token = await this.authService.updateTokens(req.cookies.Token);
+    res.cookie('Token', access_token);
   }
 }

@@ -18,7 +18,7 @@ export class UserDto {
   email: string;
 
   @ApiProperty({
-    example: '123456',
+    example: 'User || Admin',
     required: true,
   })
   @IsNotEmpty()

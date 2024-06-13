@@ -1,12 +1,8 @@
-import {
-  BadRequestException,
-  Injectable,
-  NotFoundException,
-} from '@nestjs/common';
-import { JwtService } from '@nestjs/jwt';
-import * as bcrypt from 'bcrypt';
-import { AuthDto, UserDto } from './dto';
-import { PrismaService } from '@prisma/prisma.service';
+import { BadRequestException, Injectable, NotFoundException } from "@nestjs/common";
+import { JwtService } from "@nestjs/jwt";
+import * as bcrypt from "bcrypt";
+import { AuthDto, UserDto } from "./dto";
+import { PrismaService } from "@prisma/prisma.service";
 
 @Injectable()
 export class AuthService {
@@ -59,14 +55,14 @@ export class AuthService {
       sub: thisUser.id,
       roles: thisUser.roles,
     };
-    const refreshToken = this.jwtService.sign(payload, { expiresIn: '999d' });
+    const refreshToken = this.jwtService.sign(payload, { expiresIn: process.env.JWT_REF_EXP });
 
     await this.prisma.user.update({
       where: { email: user.email },
       data: { Token: refreshToken },
     });
 
-    return this.jwtService.sign(payload, { expiresIn: '1d' });
+    return this.jwtService.sign(payload, { expiresIn: process.env.JWT_AC_EXP });
   }
 
   async updateTokens(token: string) {
@@ -81,12 +77,13 @@ export class AuthService {
       sub: user.id,
       roles: user.roles,
     };
-    const refreshToken = this.jwtService.sign(payload, { expiresIn: '999d' });
+    const refreshToken = this.jwtService.sign(payload, { expiresIn: process.env.JWT_REF_EXP });
 
     await this.prisma.user.update({
       where: { email: user.email },
       data: { Token: refreshToken },
     });
+    return this.jwtService.sign(payload, { expiresIn: process.env.JWT_AC_EXP })
   }
 
   private async hashPassword(password: string) {

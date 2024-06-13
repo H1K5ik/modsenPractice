@@ -45,10 +45,12 @@ export class MeetupService {
     });
 
     if (!meetup) throw new BadRequestException('Meetup has not been created');
+
     await this.prisma.user.update({
       where: { id: id },
       data: { roles: 'Admin' },
     });
+
     return meetup;
   }
 
@@ -60,8 +62,10 @@ export class MeetupService {
     const oldPost = await this.prisma.meetup.findUnique({
       where: { id: +id },
     });
+
     if (!(oldPost.authorId == userId))
       throw new ForbiddenException(`You're not the author of the meetup`);
+
     try {
       return await this.prisma.meetup.update({
         where: { id: +id },
@@ -87,6 +91,7 @@ export class MeetupService {
       throw new NotFoundException(`The meetup not found or the id is wrong`);
 
     await this.prisma.meetup.delete({ where: { id: +id } });
+
     return meetup;
   }
 }
