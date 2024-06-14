@@ -16,6 +16,32 @@
     "noImplicitAny": false,
     "strictBindCallApply": false,
     "forceConsistentCasingInFileNames": false,
-    "noFallthroughCasesInSwitch": false
+    "noFallthroughCasesInSwitch": false,
+    "paths": {
+      "@decorators": [
+        "src/libs/decorators"
+      ],
+      "@decorators/*": [
+        "src/libs/decorators/*"
+      ],
+      "@config": [
+        "src/libs/config"
+      ],
+      "@config/*": [
+        "src/libs/config/*"
+      ],
+      "@prisma": [
+        "src/libs/prisma"
+      ],
+      "@prisma/*": [
+        "src/libs/prisma/*"
+      ],
+      "@modules": [
+        "src/modules"
+      ],
+      "@modules/*": [
+        "src/modules/*"
+      ]
+    }
   }
 }
