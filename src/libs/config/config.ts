@@ -1,6 +1,7 @@
 import { applyDecorators, INestApplication, UseGuards } from '@nestjs/common';
 import {
   ApiBody,
+  ApiCookieAuth,
   ApiResponse,
   ApiTags,
   DocumentBuilder,
@@ -13,7 +14,10 @@ import { Roles } from '@decorators/roles.decorator';
 
 export class Config {
   static initialize(app: INestApplication) {
-    const config = new DocumentBuilder().setTitle('Meetup-api').build();
+    const config = new DocumentBuilder()
+      .setTitle('Meetup-api')
+      .addCookieAuth('optional-session-id')
+      .build();
     const document = SwaggerModule.createDocument(app, config);
     SwaggerModule.setup('api', app, document);
   }
@@ -45,6 +49,7 @@ export function ApiResponseAndBody(type: string) {
           type: AuthDto,
           description: 'Json structure for user object',
         }),
+        ApiCookieAuth(),
       );
     case 'update-tokens':
       return applyDecorators(
@@ -54,10 +59,11 @@ export function ApiResponseAndBody(type: string) {
         }),
         ApiResponse({ status: 400, description: 'Bad request.' }),
         UseGuards(JwtAuthGuard),
+        ApiCookieAuth(),
       );
 
     case 'meetup':
-      return ApiTags('meetup'), UseGuards(JwtAuthGuard);
+      return ApiTags('meetup'), UseGuards(JwtAuthGuard), ApiCookieAuth();
 
     case 'getAllMeetups':
       return applyDecorators(
