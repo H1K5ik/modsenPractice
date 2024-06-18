@@ -1,8 +1,8 @@
-import { ApiProperty } from '@nestjs/swagger';
+import {  ApiPropertyOptional } from '@nestjs/swagger';
 import { IsNumber, IsOptional, IsString, Min } from 'class-validator';
 
 export class QueryDto {
-  @ApiProperty({
+  @ApiPropertyOptional({
     example: 'There is ur title',
     required: true,
   })
@@ -10,7 +10,7 @@ export class QueryDto {
   @IsString()
   title: string;
 
-  @ApiProperty({
+  @ApiPropertyOptional({
     example: 'There is ur page number',
     required: true,
   })
@@ -19,7 +19,7 @@ export class QueryDto {
   @Min(1)
   page: number;
 
-  @ApiProperty({
+  @ApiPropertyOptional({
     example: 'There is ur page pageSize',
     required: true,
   })

@@ -1,8 +1,12 @@
-import { BadRequestException, Injectable, NotFoundException } from "@nestjs/common";
-import { JwtService } from "@nestjs/jwt";
-import * as bcrypt from "bcrypt";
-import { AuthDto, UserDto } from "./dto";
-import { PrismaService } from "@prisma/prisma.service";
+import {
+  BadRequestException,
+  Injectable,
+  NotFoundException,
+} from '@nestjs/common';
+import { JwtService } from '@nestjs/jwt';
+import * as bcrypt from 'bcrypt';
+import { AuthDto, UserDto } from './dto';
+import { PrismaService } from '@prisma/prisma.service';
 
 @Injectable()
 export class AuthService {
@@ -20,7 +24,7 @@ export class AuthService {
     if (thisUser) throw new BadRequestException('User exists');
 
     const userName = user.email.split('@')[0];
-    return this.prisma.user.create({
+    return await this.prisma.user.create({
       data: {
         email: user.email,
         password: hashedPassword,
@@ -55,7 +59,9 @@ export class AuthService {
       sub: thisUser.id,
       roles: thisUser.roles,
     };
-    const refreshToken = this.jwtService.sign(payload, { expiresIn: process.env.JWT_REF_EXP });
+    const refreshToken = this.jwtService.sign(payload, {
+      expiresIn: process.env.JWT_REF_EXP,
+    });
 
     await this.prisma.user.update({
       where: { email: user.email },
@@ -77,13 +83,15 @@ export class AuthService {
       sub: user.id,
       roles: user.roles,
     };
-    const refreshToken = this.jwtService.sign(payload, { expiresIn: process.env.JWT_REF_EXP });
+    const refreshToken = this.jwtService.sign(payload, {
+      expiresIn: process.env.JWT_REF_EXP,
+    });
 
     await this.prisma.user.update({
       where: { email: user.email },
       data: { Token: refreshToken },
     });
-    return this.jwtService.sign(payload, { expiresIn: process.env.JWT_AC_EXP })
+    return this.jwtService.sign(payload, { expiresIn: process.env.JWT_AC_EXP });
   }
 
   private async hashPassword(password: string) {
