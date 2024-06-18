@@ -1,5 +1,6 @@
 import { applyDecorators, INestApplication, UseGuards } from '@nestjs/common';
 import {
+  ApiBearerAuth,
   ApiBody,
   ApiCookieAuth,
   ApiResponse,
@@ -16,7 +17,8 @@ export class Config {
   static initialize(app: INestApplication) {
     const config = new DocumentBuilder()
       .setTitle('Meetup-api')
-      .addCookieAuth('optional-session-id')
+      .setVersion('3.0')
+      .addBearerAuth()
       .build();
     const document = SwaggerModule.createDocument(app, config);
     SwaggerModule.setup('api', app, document);
@@ -49,7 +51,7 @@ export function ApiResponseAndBody(type: string) {
           type: AuthDto,
           description: 'Json structure for user object',
         }),
-        ApiCookieAuth(),
+        ApiBearerAuth(),
       );
     case 'update-tokens':
       return applyDecorators(
@@ -59,17 +61,17 @@ export function ApiResponseAndBody(type: string) {
         }),
         ApiResponse({ status: 400, description: 'Bad request.' }),
         UseGuards(JwtAuthGuard),
-        ApiCookieAuth(),
+        ApiBearerAuth(),
       );
 
     case 'meetup':
-      return ApiTags('meetup'), UseGuards(JwtAuthGuard), ApiCookieAuth();
+      return ApiTags('meetup'), UseGuards(JwtAuthGuard);
 
     case 'getAllMeetups':
       return applyDecorators(
         ApiResponse({
           status: 200,
-          description: 'Meetups has been successfully created. found found',
+          description: 'Meetups has been successfully found.',
         }),
         ApiResponse({ status: 404, description: 'Not Found' }),
       );
@@ -78,7 +80,7 @@ export function ApiResponseAndBody(type: string) {
       return applyDecorators(
         ApiResponse({
           status: 200,
-          description: 'The meetup has been successfully created. found',
+          description: 'The meetup has been successfully found.',
         }),
         ApiResponse({ status: 404, description: 'Not Found' }),
       );
