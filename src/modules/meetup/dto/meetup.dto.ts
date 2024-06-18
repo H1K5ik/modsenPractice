@@ -1,8 +1,8 @@
-import { ApiProperty } from '@nestjs/swagger';
-import { IsOptional, MinLength } from 'class-validator';
+import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger';
+import { IsDate, IsOptional, MinLength } from 'class-validator';
 
 export class MeetupDto {
-  @ApiProperty({
+  @ApiPropertyOptional({
     example: 'There is ur meetup id',
     required: true,
   })
@@ -16,7 +16,7 @@ export class MeetupDto {
   @MinLength(6)
   title: string;
 
-  @ApiProperty({
+  @ApiPropertyOptional({
     example: 'There is ur best description',
     required: true,
   })
@@ -24,7 +24,7 @@ export class MeetupDto {
   @MinLength(6)
   description: string;
 
-  @ApiProperty({
+  @ApiPropertyOptional({
     example: 'There is ur best tags',
     required: true,
   })
@@ -32,14 +32,15 @@ export class MeetupDto {
   @MinLength(6)
   tags: string;
 
-  @ApiProperty({
-    example: 'There is ur date',
+  @ApiPropertyOptional({
+    example: 'December 17',
     required: true,
   })
   @IsOptional()
+  @IsDate()
   date: Date;
 
-  @ApiProperty({
+  @ApiPropertyOptional({
     example: 'There is ur best place',
     required: true,
   })
@@ -47,7 +48,7 @@ export class MeetupDto {
   @MinLength(6)
   place: string;
 
-  @ApiProperty({
+  @ApiPropertyOptional({
     example: 'There is ur id',
     required: true,
   })

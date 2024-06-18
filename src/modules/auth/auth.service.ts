@@ -24,7 +24,7 @@ export class AuthService {
     if (thisUser) throw new BadRequestException('User exists');
 
     const userName = user.email.split('@')[0];
-    return this.prisma.user.create({
+    return await this.prisma.user.create({
       data: {
         email: user.email,
         password: hashedPassword,
