@@ -4,7 +4,7 @@ import {
   Injectable,
   NotFoundException,
 } from '@nestjs/common';
-import { MeetupDto, QueryDto } from './dto';
+import { MeetupDto, QueryDto } from '@dto';
 import { PrismaService } from '@prisma/prisma.service';
 
 @Injectable()
@@ -26,19 +26,21 @@ export class MeetupService {
 
   async getMeetupById(id: number): Promise<MeetupDto> {
     try {
-      let thisMeetup =  await this.prisma.meetup.findUnique({ where: { id: +id } });
+      const thisMeetup = await this.prisma.meetup.findUnique({
+        where: { id: +id },
+      });
 
-      if(!thisMeetup) throw new NotFoundException(`The meetup not found or the id is wrong`);
+      if (!thisMeetup)
+        throw new NotFoundException(`The meetup not found or the id is wrong`);
 
-      return thisMeetup
+      return thisMeetup;
     } catch (error) {
       throw new NotFoundException(`The meetup not found or the id is wrong`);
     }
   }
 
   async createMeetup(id: number, dto: MeetupDto): Promise<MeetupDto> {
-    
-    const meetup = await this.prisma.meetup.create({ 
+    const meetup = await this.prisma.meetup.create({
       data: {
         title: dto.title,
         description: dto.description,
@@ -68,7 +70,8 @@ export class MeetupService {
       where: { id: +id },
     });
 
-    if (!oldPost) throw new BadRequestException('Write correct id or meetup doesn\'t exist');
+    if (!oldPost)
+      throw new BadRequestException("Write correct id or meetup doesn't exist");
 
     if (!(oldPost.authorId == userId))
       throw new ForbiddenException(`You're not the author of the meetup`);

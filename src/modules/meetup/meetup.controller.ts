@@ -9,7 +9,7 @@ import {
   Query,
 } from '@nestjs/common';
 import { MeetupService } from './meetup.service';
-import { MeetupDto, QueryDto } from './dto';
+import { MeetupDto, QueryDto } from '@dto';
 import { ApiResponseAndBody } from '@config/config';
 import { GetUserId } from '@decorators/userid.decorator';
 import { ApiBearerAuth } from '@nestjs/swagger';

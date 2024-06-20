@@ -41,6 +41,12 @@
       ],
       "@modules/*": [
         "src/modules/*"
+      ],
+      "@dto": [
+        "src/libs/dto"
+      ],
+      "@dto/*": [
+        "src/libs/dto/*"
       ]
     }
   }

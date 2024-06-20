@@ -2,14 +2,12 @@ import { applyDecorators, INestApplication, UseGuards } from '@nestjs/common';
 import {
   ApiBearerAuth,
   ApiBody,
-  ApiCookieAuth,
   ApiResponse,
   ApiTags,
   DocumentBuilder,
   SwaggerModule,
 } from '@nestjs/swagger';
-import { AuthDto } from '@modules/auth/dto';
-import { MeetupDto } from '@modules/meetup/dto';
+import { AuthDto, MeetupDto } from '@dto';
 import { JwtAuthGuard, RolesGuard } from '@modules/auth/guards';
 import { Roles } from '@decorators/roles.decorator';
 
