@@ -20,13 +20,13 @@ export class AuthController {
   @Post('login')
   async login(@Body() dto: AuthDto, @Res({ passthrough: true }) res: Response) {
     const access_token = await this.authService.login(dto);
-    res.cookie('Token', access_token);
+    res.cookie('Token', access_token, { httpOnly: true });
   }
 
   @ApiResponseAndBody('update-tokens')
   @Get('update-tokens')
   async update(@Req() req: Request, @Res({ passthrough: true }) res: Response) {
     const access_token = await this.authService.updateTokens(req.cookies.Token);
-    res.cookie('Token', access_token);
+    res.cookie('Token', access_token, { httpOnly: true });
   }
 }
