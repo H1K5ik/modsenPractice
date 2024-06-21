@@ -9,6 +9,7 @@ export class UserDto {
   @IsNotEmpty()
   @IsEmail()
   id: number;
+
   @ApiProperty({
     example: 'test@mail.ru',
     required: true,

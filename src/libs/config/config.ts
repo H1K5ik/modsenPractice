@@ -1,15 +1,19 @@
-import { applyDecorators, INestApplication, UseGuards } from '@nestjs/common';
+import {
+  applyDecorators,
+  HttpCode,
+  HttpStatus,
+  INestApplication,
+  UseGuards,
+} from '@nestjs/common';
 import {
   ApiBearerAuth,
   ApiBody,
-  ApiCookieAuth,
   ApiResponse,
   ApiTags,
   DocumentBuilder,
   SwaggerModule,
 } from '@nestjs/swagger';
-import { AuthDto } from '@modules/auth/dto';
-import { MeetupDto } from '@modules/meetup/dto';
+import { AuthDto, ChangeMeetupDto, MeetupDto } from '@dto';
 import { JwtAuthGuard, RolesGuard } from '@modules/auth/guards';
 import { Roles } from '@decorators/roles.decorator';
 
@@ -38,6 +42,7 @@ export function ApiResponseAndBody(type: string) {
           type: AuthDto,
           description: 'Json structure for user object',
         }),
+        HttpCode(HttpStatus.CREATED),
       );
 
     case 'login':
@@ -65,7 +70,11 @@ export function ApiResponseAndBody(type: string) {
       );
 
     case 'meetup':
-      return ApiTags('meetup'), UseGuards(JwtAuthGuard);
+      return applyDecorators(
+        UseGuards(JwtAuthGuard),
+        ApiTags('meetup'),
+        ApiBearerAuth(),
+      );
 
     case 'getAllMeetups':
       return applyDecorators(
@@ -95,6 +104,7 @@ export function ApiResponseAndBody(type: string) {
           type: MeetupDto,
           description: 'Json structure for user object',
         }),
+        HttpCode(HttpStatus.CREATED),
       );
     case 'changeMeetup':
       return applyDecorators(
@@ -105,7 +115,7 @@ export function ApiResponseAndBody(type: string) {
         ApiResponse({ status: 403, description: 'Forbidden' }),
         ApiResponse({ status: 404, description: 'Not Found' }),
         ApiBody({
-          type: MeetupDto,
+          type: ChangeMeetupDto,
           description: 'Json structure for user object',
         }),
         UseGuards(RolesGuard),
@@ -119,6 +129,7 @@ export function ApiResponseAndBody(type: string) {
         }),
         ApiResponse({ status: 403, description: 'Forbidden' }),
         ApiResponse({ status: 404, description: 'Not found' }),
+        HttpCode(HttpStatus.NO_CONTENT),
       );
   }
 }

@@ -9,13 +9,11 @@ import {
   Query,
 } from '@nestjs/common';
 import { MeetupService } from './meetup.service';
-import { MeetupDto, QueryDto } from './dto';
+import { ChangeMeetupDto, MeetupDto, QueryDto } from '@dto';
 import { ApiResponseAndBody } from '@config/config';
 import { GetUserId } from '@decorators/userid.decorator';
-import { ApiBearerAuth } from '@nestjs/swagger';
 
 @ApiResponseAndBody('meetup')
-@ApiBearerAuth()
 @Controller('meetup')
 export class MeetupController {
   constructor(private readonly meetupService: MeetupService) {}
@@ -47,16 +45,13 @@ export class MeetupController {
     @GetUserId('id') userId: number,
     @Param('id') id: number,
     @Body() dto: MeetupDto,
-  ): Promise<MeetupDto> {
+  ): Promise<ChangeMeetupDto> {
     return await this.meetupService.changeMeetup(userId, id, dto);
   }
 
   @ApiResponseAndBody('deleteMeetup')
   @Delete('delete/:id')
-  async deleteMeetup(
-    @GetUserId('id') userId: number,
-    @Param('id') id: number,
-  ): Promise<MeetupDto> {
-    return await this.meetupService.deleteMeetup(userId, id);
+  async deleteMeetup(@GetUserId('id') userId: number, @Param('id') id: number) {
+    await this.meetupService.deleteMeetup(userId, id);
   }
 }
