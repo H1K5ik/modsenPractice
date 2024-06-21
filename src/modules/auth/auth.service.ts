@@ -1,12 +1,14 @@
 import {
   BadRequestException,
+  HttpException,
+  HttpStatus,
   Injectable,
   NotFoundException,
 } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
-import * as bcrypt from 'bcrypt';
 import { AuthDto, UserDto } from '@dto';
 import { PrismaService } from '@prisma/prisma.service';
+import { comparePassword, hashPassword, createTokens } from '@utils';
 
 @Injectable()
 export class AuthService {
@@ -16,12 +18,19 @@ export class AuthService {
   ) {}
 
   async register(user: AuthDto): Promise<UserDto> {
-    const hashedPassword = await this.hashPassword(user.password);
+    const hashedPassword = await hashPassword(user.password);
     const thisUser = await this.prisma.user.findUnique({
       where: { email: user.email },
     });
 
-    if (thisUser) throw new BadRequestException('User exists');
+    if (thisUser)
+      throw new HttpException(
+        {
+          status: HttpStatus.BAD_REQUEST,
+          error: 'User  exists',
+        },
+        HttpStatus.BAD_REQUEST,
+      );
 
     const userName = user.email.split('@')[0];
     return await this.prisma.user.create({
@@ -45,10 +54,7 @@ export class AuthService {
 
     if (!thisUser) throw new BadRequestException('User does not exist');
 
-    const passwordMatch = await bcrypt.compare(
-      user.password,
-      thisUser.password,
-    );
+    const passwordMatch = comparePassword(user, thisUser);
 
     if (!passwordMatch) {
       throw new NotFoundException('Incorrect password');
@@ -59,16 +65,8 @@ export class AuthService {
       sub: thisUser.id,
       roles: thisUser.roles,
     };
-    const refreshToken = this.jwtService.sign(payload, {
-      expiresIn: process.env.JWT_REF_EXP,
-    });
 
-    await this.prisma.user.update({
-      where: { email: user.email },
-      data: { Token: refreshToken },
-    });
-
-    return this.jwtService.sign(payload, { expiresIn: process.env.JWT_AC_EXP });
+    return createTokens(payload, user);
   }
 
   async updateTokens(token: string) {
@@ -83,18 +81,6 @@ export class AuthService {
       sub: user.id,
       roles: user.roles,
     };
-    const refreshToken = this.jwtService.sign(payload, {
-      expiresIn: process.env.JWT_REF_EXP,
-    });
-
-    await this.prisma.user.update({
-      where: { email: user.email },
-      data: { Token: refreshToken },
-    });
-    return this.jwtService.sign(payload, { expiresIn: process.env.JWT_AC_EXP });
-  }
-
-  private async hashPassword(password: string) {
-    return await bcrypt.hash(password, 10);
+    return createTokens(payload, user);
   }
 }

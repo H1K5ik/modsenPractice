@@ -47,7 +47,19 @@
       ],
       "@dto/*": [
         "src/libs/dto/*"
-      ]
+      ],
+      "@constants": [
+        "src/libs/constants"
+      ],
+      "@constants/*": [
+        "src/libs/constants/*"
+      ],
+      "@utils": [
+        "src/libs/utils"
+      ],
+      "@utils/*": [
+        "src/libs/utils/*"
+      ],
     }
   }
 }

@@ -4,7 +4,7 @@ import {
   Injectable,
   NotFoundException,
 } from '@nestjs/common';
-import { MeetupDto, QueryDto } from '@dto';
+import { ChangeMeetupDto, MeetupDto, QueryDto } from '@dto';
 import { PrismaService } from '@prisma/prisma.service';
 
 @Injectable()
@@ -40,6 +40,8 @@ export class MeetupService {
   }
 
   async createMeetup(id: number, dto: MeetupDto): Promise<MeetupDto> {
+    if (!dto.date) dto.date = new Date(Date.now());
+
     const meetup = await this.prisma.meetup.create({
       data: {
         title: dto.title,
@@ -47,7 +49,7 @@ export class MeetupService {
         tags: dto.tags,
         place: dto.place,
         authorId: id,
-        date: new Date(dto.date),
+        date: dto.date,
       },
     });
 
@@ -65,7 +67,9 @@ export class MeetupService {
     userId: number,
     id: number,
     dto: MeetupDto,
-  ): Promise<MeetupDto> {
+  ): Promise<ChangeMeetupDto> {
+    if (+id !== +id) throw new BadRequestException(`Input correct id`);
+
     const oldPost = await this.prisma.meetup.findUnique({
       where: { id: +id },
     });
@@ -77,6 +81,8 @@ export class MeetupService {
       throw new ForbiddenException(`You're not the author of the meetup`);
 
     try {
+      if (!dto.date) dto.date = new Date(Date.now());
+
       return await this.prisma.meetup.update({
         where: { id: +id },
         data: {
@@ -84,7 +90,7 @@ export class MeetupService {
           description: dto.description,
           tags: dto.tags,
           place: dto.place,
-          date: new Date(dto.date),
+          date: dto.date,
         },
       });
     } catch (error) {
@@ -92,7 +98,7 @@ export class MeetupService {
     }
   }
 
-  async deleteMeetup(userId: number, id: number): Promise<MeetupDto> {
+  async deleteMeetup(userId: number, id: number) {
     const meetup = await this.prisma.meetup.findUnique({ where: { id: +id } });
 
     if (!meetup)
@@ -102,7 +108,5 @@ export class MeetupService {
       throw new ForbiddenException(`You're not the author of the meetup`);
 
     await this.prisma.meetup.delete({ where: { id: +id } });
-
-    return meetup;
   }
 }

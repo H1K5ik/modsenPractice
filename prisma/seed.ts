@@ -1,14 +1,10 @@
 import { PrismaClient } from '@prisma/client';
 import { faker } from '@faker-js/faker';
-import * as bcrypt from 'bcrypt';
 import { SeedDto } from '@dto';
+import { hashPassword } from '../src/libs/utils';
 
 const prisma = new PrismaClient();
 
-async function hashPassword(password) {
-  const salt = 10;
-  return await bcrypt.hash(password, salt);
-}
 const fakerUser = async (): Promise<SeedDto> => ({
   name: faker.internet.userName(),
   email: faker.internet.email(),
