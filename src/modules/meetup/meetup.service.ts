@@ -49,7 +49,7 @@ export class MeetupService {
         tags: dto.tags,
         place: dto.place,
         authorId: id,
-        date: dto.date,
+        date: new Date(dto.date),
       },
     });
 
@@ -90,7 +90,7 @@ export class MeetupService {
           description: dto.description,
           tags: dto.tags,
           place: dto.place,
-          date: dto.date,
+          date: new Date(dto.date),
         },
       });
     } catch (error) {
