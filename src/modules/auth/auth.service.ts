@@ -1,7 +1,5 @@
 import {
   BadRequestException,
-  HttpException,
-  HttpStatus,
   Injectable,
   NotFoundException,
 } from '@nestjs/common';
@@ -23,14 +21,7 @@ export class AuthService {
       where: { email: user.email },
     });
 
-    if (thisUser)
-      throw new HttpException(
-        {
-          status: HttpStatus.BAD_REQUEST,
-          error: 'User  exists',
-        },
-        HttpStatus.BAD_REQUEST,
-      );
+    if (thisUser) throw new BadRequestException('User exists');
 
     const userName = user.email.split('@')[0];
     return await this.prisma.user.create({
@@ -57,7 +48,7 @@ export class AuthService {
     const passwordMatch = comparePassword(user, thisUser);
 
     if (!passwordMatch) {
-      throw new NotFoundException('Incorrect password');
+      throw new NotFoundException('Incorrect password or login');
     }
 
     const payload = {

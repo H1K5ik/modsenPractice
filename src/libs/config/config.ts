@@ -70,7 +70,11 @@ export function ApiResponseAndBody(type: string) {
       );
 
     case 'meetup':
-      return UseGuards(JwtAuthGuard), ApiTags('meetup');
+      return applyDecorators(
+        UseGuards(JwtAuthGuard),
+        ApiTags('meetup'),
+        ApiBearerAuth(),
+      );
 
     case 'getAllMeetups':
       return applyDecorators(
@@ -100,6 +104,7 @@ export function ApiResponseAndBody(type: string) {
           type: MeetupDto,
           description: 'Json structure for user object',
         }),
+        HttpCode(HttpStatus.CREATED),
       );
     case 'changeMeetup':
       return applyDecorators(

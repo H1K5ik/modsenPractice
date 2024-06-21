@@ -12,10 +12,8 @@ import { MeetupService } from './meetup.service';
 import { ChangeMeetupDto, MeetupDto, QueryDto } from '@dto';
 import { ApiResponseAndBody } from '@config/config';
 import { GetUserId } from '@decorators/userid.decorator';
-import { ApiBearerAuth } from '@nestjs/swagger';
 
 @ApiResponseAndBody('meetup')
-@ApiBearerAuth()
 @Controller('meetup')
 export class MeetupController {
   constructor(private readonly meetupService: MeetupService) {}
