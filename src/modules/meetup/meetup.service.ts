@@ -5,21 +5,17 @@ import {
   NotFoundException,
 } from '@nestjs/common';
 
-import { ChangeMeetupDto, MeetupDto, QueryDto } from '@dto';
+import { ChangeMeetupDto, MeetupDto } from '@dto';
+import { queryProps } from '@interfaces';
 import { PrismaService } from '@prisma/prisma.service';
+import { pagination } from '@utils';
 
 @Injectable()
 export class MeetupService {
   constructor(private readonly prisma: PrismaService) {}
-  async getAllMeetups(query: QueryDto): Promise<MeetupDto[]> {
+  async getAllMeetups(query: queryProps): Promise<MeetupDto[]> {
     try {
-      const { title, page = 2, pageSize = 3 } = query;
-      const skip = (page - 1) * pageSize;
-      return await this.prisma.meetup.findMany({
-        where: { title },
-        skip,
-        take: +pageSize,
-      });
+      return pagination(query);
     } catch (error) {
       throw new NotFoundException(`The meetup not found or the id is wrong`);
     }
