@@ -2,6 +2,7 @@ import { CanActivate, ExecutionContext, Injectable } from '@nestjs/common';
 import { Reflector } from '@nestjs/core';
 import { JwtService } from '@nestjs/jwt';
 import { Role } from '@prisma/client';
+
 import { ROLES_KEY } from '@decorators/roles.decorator';
 
 @Injectable()
@@ -22,7 +23,7 @@ export class RolesGuard implements CanActivate {
     }
 
     const user = context.switchToHttp().getRequest();
-    const access_token = user.cookies.Token;
+    const access_token = user.cookies.accessToken;
 
     try {
       const decodedToken = this.jwtService.verify(access_token, {

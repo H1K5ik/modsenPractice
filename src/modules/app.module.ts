@@ -1,7 +1,8 @@
 import { Module } from '@nestjs/common';
-import { MeetupModule } from './meetup/meetup.module';
-import { AuthModule } from './auth/auth.module';
 import { PassportModule } from '@nestjs/passport';
+
+import { AuthModule } from './auth/auth.module';
+import { MeetupModule } from './meetup/meetup.module';
 
 @Module({
   imports: [

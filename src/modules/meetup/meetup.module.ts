@@ -1,7 +1,9 @@
 import { Module } from '@nestjs/common';
-import { MeetupService } from './meetup.service';
-import { MeetupController } from './meetup.controller';
+
 import { PrismaService } from '@prisma/prisma.service';
+
+import { MeetupController } from './meetup.controller';
+import { MeetupService } from './meetup.service';
 
 @Module({
   controllers: [MeetupController],

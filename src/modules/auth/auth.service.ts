@@ -3,17 +3,15 @@ import {
   Injectable,
   NotFoundException,
 } from '@nestjs/common';
-import { JwtService } from '@nestjs/jwt';
+
 import { AuthDto, UserDto } from '@dto';
+import { tokenProps } from '@interfaces';
 import { PrismaService } from '@prisma/prisma.service';
-import { comparePassword, hashPassword, createTokens } from '@utils';
+import { comparePassword, createTokens, hashPassword } from '@utils';
 
 @Injectable()
 export class AuthService {
-  constructor(
-    private readonly prisma: PrismaService,
-    private jwtService: JwtService,
-  ) {}
+  constructor(private readonly prisma: PrismaService) {}
 
   async register(user: AuthDto): Promise<UserDto> {
     const hashedPassword = await hashPassword(user.password);
@@ -38,7 +36,7 @@ export class AuthService {
     });
   }
 
-  async login(user: AuthDto): Promise<string> {
+  async login(user: AuthDto): Promise<tokenProps> {
     const thisUser = await this.prisma.user.findUnique({
       where: { email: user.email },
     });
@@ -60,12 +58,9 @@ export class AuthService {
     return createTokens(payload, user);
   }
 
-  async updateTokens(token: string) {
-    const decodedToken = await this.jwtService.verify(token, {
-      secret: process.env.JWT_SECRET,
-    });
-    const user = await this.prisma.user.findUnique({
-      where: { email: decodedToken.email },
+  async updateTokens(token: string): Promise<tokenProps> {
+    const user = await this.prisma.user.findFirst({
+      where: { Token: token },
     });
     const payload = {
       email: user.email,

@@ -1,6 +1,7 @@
 import { PassportStrategy } from '@nestjs/passport';
 import { Request } from 'express';
 import { ExtractJwt, Strategy } from 'passport-jwt';
+
 import { PayloadDto } from '@dto';
 
 export class JwtStrategy extends PassportStrategy(Strategy) {
@@ -11,7 +12,7 @@ export class JwtStrategy extends PassportStrategy(Strategy) {
           let token = null;
 
           if (request && request.cookies) {
-            token = request.cookies.Token;
+            token = request.cookies.accessToken;
           }
 
           return token;

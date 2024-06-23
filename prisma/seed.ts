@@ -1,11 +1,13 @@
-import { PrismaClient } from '@prisma/client';
 import { faker } from '@faker-js/faker';
-import { SeedDto } from '@dto';
+import { PrismaClient } from '@prisma/client';
+
+import { seedProps } from '@interfaces/seed.interface';
+
 import { hashPassword } from '../src/libs/utils';
 
 const prisma = new PrismaClient();
 
-const fakerUser = async (): Promise<SeedDto> => ({
+const fakerUser = async (): Promise<seedProps> => ({
   name: faker.internet.userName(),
   email: faker.internet.email(),
   password: '123456',

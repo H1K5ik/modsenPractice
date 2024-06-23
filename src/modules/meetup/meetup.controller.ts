@@ -8,10 +8,13 @@ import {
   Post,
   Query,
 } from '@nestjs/common';
-import { MeetupService } from './meetup.service';
-import { ChangeMeetupDto, MeetupDto, QueryDto } from '@dto';
+
 import { ApiResponseAndBody } from '@config/config';
 import { GetUserId } from '@decorators/userid.decorator';
+import { ChangeMeetupDto, MeetupDto } from '@dto';
+import { queryProps } from '@interfaces';
+
+import { MeetupService } from './meetup.service';
 
 @ApiResponseAndBody('meetup')
 @Controller('meetup')
@@ -20,7 +23,7 @@ export class MeetupController {
 
   @ApiResponseAndBody('getAllMeetups')
   @Get()
-  async getAllMeetups(@Query() query: QueryDto): Promise<MeetupDto[]> {
+  async getAllMeetups(@Query() query: queryProps): Promise<MeetupDto[]> {
     return await this.meetupService.getAllMeetups(query);
   }
 
