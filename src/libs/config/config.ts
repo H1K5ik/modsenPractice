@@ -8,6 +8,7 @@ import {
 import {
   ApiBearerAuth,
   ApiBody,
+  ApiExtraModels,
   ApiResponse,
   ApiTags,
   DocumentBuilder,
@@ -15,7 +16,7 @@ import {
 } from '@nestjs/swagger';
 
 import { Roles } from '@decorators/roles.decorator';
-import { AuthDto, ChangeMeetupDto, MeetupDto } from '@dto';
+import { AuthDto, ChangeMeetupDto, MeetupDto, PayloadDto, UserDto } from '@dto';
 import { JwtAuthGuard, RolesGuard } from '@modules/auth/guards';
 
 export class Config {
@@ -80,6 +81,7 @@ export function ApiResponseAndBody(type: string) {
 
     case 'meetup':
       return applyDecorators(
+        ApiExtraModels(PayloadDto, UserDto),
         UseGuards(JwtAuthGuard),
         ApiTags('meetup'),
         ApiBearerAuth(),
