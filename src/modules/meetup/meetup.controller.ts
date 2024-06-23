@@ -8,10 +8,12 @@ import {
   Post,
   Query,
 } from '@nestjs/common';
-import { MeetupService } from './meetup.service';
-import { ChangeMeetupDto, MeetupDto, QueryDto } from '@dto';
+
 import { ApiResponseAndBody } from '@config/config';
 import { GetUserId } from '@decorators/userid.decorator';
+import { ChangeMeetupDto, MeetupDto, QueryDto } from '@dto';
+
+import { MeetupService } from './meetup.service';
 
 @ApiResponseAndBody('meetup')
 @Controller('meetup')

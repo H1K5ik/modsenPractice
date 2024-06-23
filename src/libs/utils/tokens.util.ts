@@ -1,6 +1,7 @@
-import { AuthDto, PayloadDto } from '@dto';
 import { JwtService } from '@nestjs/jwt';
 import { PrismaClient } from '@prisma/client';
+
+import { AuthDto, PayloadDto } from '@dto';
 
 const jwtService = new JwtService();
 const prisma = new PrismaClient();
