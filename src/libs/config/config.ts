@@ -1,9 +1,9 @@
 import {
-  applyDecorators,
   HttpCode,
   HttpStatus,
   INestApplication,
   UseGuards,
+  applyDecorators,
 } from '@nestjs/common';
 import {
   ApiBearerAuth,
@@ -35,10 +35,13 @@ export function ApiResponseAndBody(type: string) {
     case 'register':
       return applyDecorators(
         ApiResponse({
-          status: 201,
+          status: HttpStatus.CREATED,
           description: 'The record has been successfully created.',
         }),
-        ApiResponse({ status: 400, description: 'Bad request.' }),
+        ApiResponse({
+          status: HttpStatus.BAD_REQUEST,
+          description: 'Bad request.',
+        }),
         ApiBody({
           type: AuthDto,
           description: 'Json structure for user object',
@@ -49,25 +52,30 @@ export function ApiResponseAndBody(type: string) {
     case 'login':
       return applyDecorators(
         ApiResponse({
-          status: 201,
+          status: HttpStatus.OK,
           description: 'User logged successfully',
         }),
-        ApiResponse({ status: 400, description: 'Bad request.' }),
+        ApiResponse({
+          status: HttpStatus.BAD_REQUEST,
+          description: 'Bad request.',
+        }),
         ApiBody({
           type: AuthDto,
           description: 'Json structure for user object',
         }),
         ApiBearerAuth(),
+        HttpCode(HttpStatus.OK),
       );
     case 'update-tokens':
       return applyDecorators(
         ApiResponse({
-          status: 201,
+          status: HttpStatus.CREATED,
           description: 'User logged successfully',
         }),
         ApiResponse({ status: 400, description: 'Bad request.' }),
         UseGuards(JwtAuthGuard),
         ApiBearerAuth(),
+        HttpCode(HttpStatus.CREATED),
       );
 
     case 'meetup':
@@ -80,27 +88,30 @@ export function ApiResponseAndBody(type: string) {
     case 'getAllMeetups':
       return applyDecorators(
         ApiResponse({
-          status: 200,
+          status: HttpStatus.OK,
           description: 'Meetups has been successfully found.',
         }),
-        ApiResponse({ status: 404, description: 'Not Found' }),
+        ApiResponse({ status: HttpStatus.NOT_FOUND, description: 'Not Found' }),
       );
 
     case 'getMeetupById':
       return applyDecorators(
         ApiResponse({
-          status: 200,
+          status: HttpStatus.OK,
           description: 'The meetup has been successfully found.',
         }),
-        ApiResponse({ status: 404, description: 'Not Found' }),
+        ApiResponse({ status: HttpStatus.NOT_FOUND, description: 'Not Found' }),
       );
     case 'createMeetup':
       return applyDecorators(
         ApiResponse({
-          status: 201,
+          status: HttpStatus.CREATED,
           description: 'The meetup has been successfully created.',
         }),
-        ApiResponse({ status: 400, description: 'Bad request' }),
+        ApiResponse({
+          status: HttpStatus.BAD_REQUEST,
+          description: 'Bad request',
+        }),
         ApiBody({
           type: MeetupDto,
           description: 'Json structure for user object',
@@ -110,11 +121,11 @@ export function ApiResponseAndBody(type: string) {
     case 'changeMeetup':
       return applyDecorators(
         ApiResponse({
-          status: 200,
+          status: HttpStatus.OK,
           description: 'The meetup has been successfully changed.',
         }),
-        ApiResponse({ status: 403, description: 'Forbidden' }),
-        ApiResponse({ status: 404, description: 'Not Found' }),
+        ApiResponse({ status: HttpStatus.FORBIDDEN, description: 'Forbidden' }),
+        ApiResponse({ status: HttpStatus.NOT_FOUND, description: 'Not Found' }),
         ApiBody({
           type: ChangeMeetupDto,
           description: 'Json structure for user object',
@@ -125,11 +136,11 @@ export function ApiResponseAndBody(type: string) {
     case 'deleteMeetup':
       return applyDecorators(
         ApiResponse({
-          status: 200,
+          status: HttpStatus.OK,
           description: 'The meetup has been successfully deleted.',
         }),
-        ApiResponse({ status: 403, description: 'Forbidden' }),
-        ApiResponse({ status: 404, description: 'Not found' }),
+        ApiResponse({ status: HttpStatus.FORBIDDEN, description: 'Forbidden' }),
+        ApiResponse({ status: HttpStatus.NOT_FOUND, description: 'Not found' }),
         HttpCode(HttpStatus.NO_CONTENT),
       );
   }

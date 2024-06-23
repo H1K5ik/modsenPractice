@@ -7,13 +7,14 @@ module.exports = {
   env: {
     node: true,
   },
-  plugins: ['@typescript-eslint', 'prettier'],
+  plugins: ['@typescript-eslint', 'prettier', 'import'],
   extends: [
     'eslint:recommended',
     'plugin:@typescript-eslint/recommended',
     'plugin:prettier/recommended',
+    'plugin:import/recommended',
+    'plugin:import/typescript',
   ],
-
   rules: {
     'sort-imports': [
       'error',
@@ -24,17 +25,7 @@ module.exports = {
         memberSyntaxSortOrder: ['none', 'all', 'multiple', 'single'],
         allowSeparatedGroups: true,
       },
-    ]
-  },
-  plugins: ['@typescript-eslint', 'prettier', 'import'],
-  extends: [
-    'eslint:recommended',
-    'plugin:@typescript-eslint/recommended',
-    'plugin:prettier/recommended',
-    'plugin:import/recommended',
-    'plugin:import/typescript',
-  ],
-  rules: {
+    ],
     'import/no-unresolved': 'error',
     'import/order': [
       'error',
@@ -42,7 +33,7 @@ module.exports = {
         groups: [
           'builtin', 
           'external', 
-          'internal', 
+          'internal',
           ['sibling', 'parent'], 
           'index', 
           'unknown', 
@@ -55,12 +46,14 @@ module.exports = {
       },
     ],
   },
-  
   settings: {
     'import/resolver': {
       typescript: {
         project: './tsconfig.json',
       },
+      "node": {
+        "extensions": [".js", ".jsx", ".ts", ".tsx"]
+      }
     },
   },
 

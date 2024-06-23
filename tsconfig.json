@@ -60,6 +60,12 @@
       "@utils/*": [
         "src/libs/utils/*"
       ],
+      "@interfaces": [
+        "src/libs/interfaces"
+      ],
+      "@interfaces/*": [
+        "src/libs/interfaces/*"
+      ],
     }
   }
 }
