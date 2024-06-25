@@ -13,30 +13,41 @@ generator client {
 }
 
 datasource db {
-  provider = "postgresql"
-  url = env("POSTGRES_PRISMA_URL") 
-  directUrl = env("POSTGRES_URL_NON_POOLING") 
+  provider  = "postgresql"
+  url       = env("POSTGRES_PRISMA_URL")
+  directUrl = env("POSTGRES_URL_NON_POOLING")
 }
 
 model User {
-  id       Int      @id @default(autoincrement())
-  email    String   @unique
-  password String
-  name     String?
-  Token    String?
-  roles    Role     @default(User)
-  meetups  Meetup[]
+  id            Int          @id @default(autoincrement())
+  email         String       @unique
+  password      String
+  name          String?
+  Token         String?
+  roles         Role         @default(User)
+  meetup        Meetup[]     @relation("MeetupAuthor")
+  joinedMeetups UserMeetup[] @relation("UserMeetups")
 }
 
 model Meetup {
-  id          Int      @id @default(autoincrement())
-  title       String
-  description String?
-  tags        String?
-  date        DateTime @default(now())
-  place       String   @default("ofice")
-  author      User?    @relation(fields: [authorId], references: [id])
-  authorId    Int?
+  id           Int          @id @default(autoincrement())
+  title        String
+  description  String?
+  tags         String?
+  date         DateTime     @default(now())
+  place        String       @default("office")
+  author       User?        @relation("MeetupAuthor", fields: [authorId], references: [id])
+  authorId     Int?
+  participants UserMeetup[] @relation("MeetupParticipants")
+}
+
+model UserMeetup {
+  id       Int      @id @default(autoincrement())
+  user     User     @relation("UserMeetups", fields: [userId], references: [id])
+  userId   Int
+  meetup   Meetup   @relation("MeetupParticipants", fields: [meetupId], references: [id])
+  meetupId Int
+  joinedAt DateTime @default(now())
 }
 
 enum Role {
