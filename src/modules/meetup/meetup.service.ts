@@ -12,7 +12,7 @@ import { pagination } from '@utils';
 
 @Injectable()
 export class MeetupService {
-  constructor(private readonly prisma: PrismaService) { }
+  constructor(private readonly prisma: PrismaService) {}
 
   async addMember(meetupId: number, userId: number): Promise<UserDto[]> {
     const thisMeetup = await this.prisma.meetup.findFirst({

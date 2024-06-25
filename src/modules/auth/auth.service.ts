@@ -11,7 +11,7 @@ import { comparePassword, createTokens, hashPassword } from '@utils';
 
 @Injectable()
 export class AuthService {
-  constructor(private readonly prisma: PrismaService) { }
+  constructor(private readonly prisma: PrismaService) {}
 
   async register(user: AuthDto): Promise<UserDto> {
     const hashedPassword = await hashPassword(user.password);

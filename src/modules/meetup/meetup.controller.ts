@@ -19,7 +19,7 @@ import { MeetupService } from './meetup.service';
 @ApiResponseAndBody('meetup')
 @Controller('meetup')
 export class MeetupController {
-  constructor(private readonly meetupService: MeetupService) { }
+  constructor(private readonly meetupService: MeetupService) {}
 
   @ApiResponseAndBody('join')
   @Post(':id/join')
