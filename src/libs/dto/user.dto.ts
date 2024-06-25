@@ -24,5 +24,5 @@ export class UserDto {
   })
   @IsNotEmpty()
   @IsString()
-  roles: string;
+  name: string;
 }
