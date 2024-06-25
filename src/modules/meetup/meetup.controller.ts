@@ -11,7 +11,7 @@ import {
 
 import { ApiResponseAndBody } from '@config/config';
 import { GetUserId } from '@decorators/userid.decorator';
-import { ChangeMeetupDto, MeetupDto } from '@dto';
+import { ChangeMeetupDto, MeetupDto, UserDto } from '@dto';
 import { queryProps } from '@interfaces';
 
 import { MeetupService } from './meetup.service';
@@ -19,7 +19,42 @@ import { MeetupService } from './meetup.service';
 @ApiResponseAndBody('meetup')
 @Controller('meetup')
 export class MeetupController {
-  constructor(private readonly meetupService: MeetupService) {}
+  constructor(private readonly meetupService: MeetupService) { }
+
+  @ApiResponseAndBody('join')
+  @Post(':id/join')
+  async joinMeetup(
+    @Param('id') id: number,
+    @GetUserId('id') userId: number,
+  ): Promise<UserDto[]> {
+    return this.meetupService.addMember(id, userId);
+  }
+
+  @Delete(':id/leave')
+  async leaveMeetup(
+    @Param('id') id: number,
+    @GetUserId('id') userId: number,
+  ): Promise<void> {
+    return this.meetupService.removeMember(id, userId);
+  }
+
+  @Post(':id/add-member')
+  async addParticipant(
+    @Param('id') meetupId: number,
+    @GetUserId('id') authorId: number,
+    @Query('id') memberId: number,
+  ): Promise<UserDto[]> {
+    return this.meetupService.addParticipant(meetupId, authorId, memberId);
+  }
+
+  @Delete(':id/delete-member')
+  async removeParticipant(
+    @Param('id') meetupId: number,
+    @GetUserId('id') authorId: number,
+    @Query('id') memberId: number,
+  ): Promise<void> {
+    return this.meetupService.removeParticipant(meetupId, authorId, memberId);
+  }
 
   @ApiResponseAndBody('getAllMeetups')
   @Get()

@@ -86,6 +86,14 @@ export function ApiResponseAndBody(type: string) {
         ApiTags('meetup'),
         ApiBearerAuth(),
       );
+    case 'join':
+      return applyDecorators(
+        ApiResponse({
+          status: HttpStatus.OK,
+          description: 'Meetups has been successfully found.',
+        }),
+        ApiResponse({ status: HttpStatus.NOT_FOUND, description: 'Not Found' }),
+      );
 
     case 'getAllMeetups':
       return applyDecorators(
