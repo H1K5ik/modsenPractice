@@ -86,13 +86,64 @@ export function ApiResponseAndBody(type: string) {
         ApiTags('meetup'),
         ApiBearerAuth(),
       );
+
     case 'join':
       return applyDecorators(
         ApiResponse({
-          status: HttpStatus.OK,
-          description: 'Meetups has been successfully found.',
+          status: HttpStatus.CREATED,
+          description: 'You have successfully joined this meetup',
         }),
         ApiResponse({ status: HttpStatus.NOT_FOUND, description: 'Not Found' }),
+        ApiResponse({ status: HttpStatus.FORBIDDEN, description: 'Forbidden' }),
+        ApiResponse({
+          status: HttpStatus.BAD_REQUEST,
+          description: 'Bad request',
+        }),
+      );
+
+    case 'leave':
+      return applyDecorators(
+        ApiResponse({
+          status: HttpStatus.NO_CONTENT,
+          description: 'You have successfully leaved this meetup',
+        }),
+        ApiResponse({ status: HttpStatus.NOT_FOUND, description: 'Not Found' }),
+        ApiResponse({ status: HttpStatus.FORBIDDEN, description: 'Forbidden' }),
+        ApiResponse({
+          status: HttpStatus.BAD_REQUEST,
+          description: 'Bad request',
+        }),
+        HttpCode(HttpStatus.NO_CONTENT),
+      );
+
+    case 'addParticipant':
+      return applyDecorators(
+        ApiResponse({
+          status: HttpStatus.CREATED,
+          description: 'You have successfully added user to this meetup',
+        }),
+        ApiResponse({ status: HttpStatus.NOT_FOUND, description: 'Not Found' }),
+        ApiResponse({ status: HttpStatus.FORBIDDEN, description: 'Forbidden' }),
+        ApiResponse({
+          status: HttpStatus.BAD_REQUEST,
+          description: 'Bad request',
+        }),
+        HttpCode(HttpStatus.CREATED),
+      );
+
+    case 'removeParticipant':
+      return applyDecorators(
+        ApiResponse({
+          status: HttpStatus.NO_CONTENT,
+          description: 'You have successfully added user to this meetup',
+        }),
+        ApiResponse({ status: HttpStatus.NOT_FOUND, description: 'Not Found' }),
+        ApiResponse({ status: HttpStatus.FORBIDDEN, description: 'Forbidden' }),
+        ApiResponse({
+          status: HttpStatus.BAD_REQUEST,
+          description: 'Bad request',
+        }),
+        HttpCode(HttpStatus.NO_CONTENT),
       );
 
     case 'getAllMeetups':

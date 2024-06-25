@@ -19,7 +19,7 @@ import { MeetupService } from './meetup.service';
 @ApiResponseAndBody('meetup')
 @Controller('meetup')
 export class MeetupController {
-  constructor(private readonly meetupService: MeetupService) {}
+  constructor(private readonly meetupService: MeetupService) { }
 
   @ApiResponseAndBody('join')
   @Post(':id/join')
@@ -30,6 +30,7 @@ export class MeetupController {
     return this.meetupService.addMember(id, userId);
   }
 
+  @ApiResponseAndBody('leave')
   @Delete(':id/leave')
   async leaveMeetup(
     @Param('id') id: number,
@@ -38,6 +39,7 @@ export class MeetupController {
     return this.meetupService.removeMember(id, userId);
   }
 
+  @ApiResponseAndBody('addParticipant')
   @Post(':id/add-member')
   async addParticipant(
     @Param('id') meetupId: number,
@@ -47,6 +49,8 @@ export class MeetupController {
     return this.meetupService.addParticipant(meetupId, authorId, memberId);
   }
 
+
+  @ApiResponseAndBody('removeParticipant')
   @Delete(':id/delete-member')
   async removeParticipant(
     @Param('id') meetupId: number,

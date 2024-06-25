@@ -12,7 +12,7 @@ import { pagination } from '@utils';
 
 @Injectable()
 export class MeetupService {
-  constructor(private readonly prisma: PrismaService) {}
+  constructor(private readonly prisma: PrismaService) { }
 
   async addMember(meetupId: number, userId: number): Promise<UserDto[]> {
     const thisMeetup = await this.prisma.meetup.findFirst({
@@ -52,8 +52,8 @@ export class MeetupService {
     if (thisMeetup.authorId === userId)
       throw new BadRequestException(`You an author of this meetup`);
 
-    if (!thisMeetup.members.find((el) => el.id === userId))
-      throw new ForbiddenException(`You're not member of this meetup`);
+    if (thisMeetup.members.find((el) => el.id === userId))
+      throw new ForbiddenException(`You're already a member of this meetup`);
 
     await this.prisma.meetup.update({
       where: { id: +meetupId },
@@ -68,6 +68,7 @@ export class MeetupService {
   async addParticipant(meetupId: number, userId: number, memberId: number) {
     const thisMeetup = await this.prisma.meetup.findFirst({
       where: { id: +meetupId },
+      include: { members: true },
     });
     const user = await this.prisma.user.findFirst({
       where: { id: +memberId },
@@ -81,7 +82,10 @@ export class MeetupService {
       throw new NotFoundException(`The meetup not found or the id is wrong`);
 
     if (!(thisMeetup.authorId == userId))
-      throw new ForbiddenException(`You're not the author of the meetup`);
+      throw new BadRequestException(`You're not the author of the meetup`);
+
+    if (!thisMeetup.members.find((el) => el.id === userId))
+      throw new ForbiddenException(`You're not member of this meetup`);
 
     const meetup = await this.prisma.meetup.update({
       where: { id: +meetupId },
@@ -116,7 +120,7 @@ export class MeetupService {
       throw new NotFoundException(`The meetup not found or the id is wrong`);
 
     if (!(thisMeetup.authorId == userId))
-      throw new ForbiddenException(`You're not the author of the meetup`);
+      throw new BadRequestException(`You're not the author of the meetup`);
 
     if (!thisMeetup.members.find((el) => el.id == memberId))
       throw new ForbiddenException(`User isn't member of this meetup`);
