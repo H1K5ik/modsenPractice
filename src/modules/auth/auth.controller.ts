@@ -56,7 +56,6 @@ export class AuthController {
   @Get('google')
   async auth(): Promise<void> {}
 
-
   @ApiResponseAndBody('googleAuthCallback')
   @Get('google/callback')
   async googleAuthCallback(

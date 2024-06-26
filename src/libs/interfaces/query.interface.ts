@@ -1,5 +1,6 @@
 export interface queryProps {
-  title: string;
+  field: string;
+  fieldSearch: string;
   page: number;
   pageSize: number;
 }
