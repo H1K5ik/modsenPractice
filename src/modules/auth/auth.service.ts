@@ -14,6 +14,8 @@ export class AuthService {
   constructor(private readonly prisma: PrismaService) {}
 
   async register(user: AuthDto): Promise<UserDto> {
+    if (!user.password) throw new BadRequestException('Write user password');
+
     const hashedPassword = await hashPassword(user.password);
     const thisUser = await this.prisma.user.findUnique({
       where: { email: user.email },
@@ -43,6 +45,8 @@ export class AuthService {
 
     if (!thisUser) throw new BadRequestException('User does not exist');
 
+    if (!user.password) throw new BadRequestException('Write user password');
+
     const passwordMatch = comparePassword(user, thisUser);
 
     if (!passwordMatch) {
@@ -55,7 +59,7 @@ export class AuthService {
       roles: thisUser.roles,
     };
 
-    return createTokens(payload, user);
+    return createTokens(payload, user.email);
   }
 
   async updateTokens(token: string): Promise<tokenProps> {
@@ -67,6 +71,45 @@ export class AuthService {
       sub: user.id,
       roles: user.roles,
     };
-    return createTokens(payload, user);
+    return createTokens(payload, user.email);
+  }
+
+  async googleAuthCallback(user): Promise<tokenProps> {
+    const userCompare = await this.prisma.user.findFirst({
+      where: { email: user.email },
+    });
+
+    if (userCompare) {
+      const payload = {
+        email: userCompare.email,
+        sub: userCompare.id,
+        roles: userCompare.roles,
+      };
+      return createTokens(payload, user.email);
+    } else {
+      await this.prisma.user.create({
+        data: {
+          email: user.email,
+          name: user.name,
+        },
+        select: {
+          id: true,
+          email: true,
+          name: true,
+        },
+      });
+
+      const newUser = await this.prisma.user.findFirst({
+        where: { email: user.email },
+      });
+
+      const payload = {
+        email: newUser.email,
+        sub: newUser.id,
+        roles: newUser.roles,
+      };
+
+      return createTokens(payload, user.email);
+    }
   }
 }

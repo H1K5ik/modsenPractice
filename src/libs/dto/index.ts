@@ -3,3 +3,4 @@ export * from './payload.dto';
 export * from './user.dto';
 export * from './meetup.dto';
 export * from './changeMeetup.dto';
+export * from './googleUser.dto';

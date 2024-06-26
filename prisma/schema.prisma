@@ -15,7 +15,7 @@ model User {
   name          String?
   Token         String?
   roles         Role     @default(User)
-  password      String
+  password      String?
   meetup        Meetup[] @relation("MeetupAuthor")
   joinedMeetups Meetup[] @relation("MeetupMembers")
 }
