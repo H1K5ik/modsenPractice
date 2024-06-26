@@ -51,11 +51,13 @@ export class AuthController {
     res.cookie('refreshToken', tokens.refreshToken, { httpOnly: true });
   }
 
+  @ApiResponseAndBody('google')
   @UseGuards(GoogleGuard)
   @Get('google')
   async auth(): Promise<void> {}
 
-  @UseGuards(GoogleGuard)
+
+  @ApiResponseAndBody('googleAuthCallback')
   @Get('google/callback')
   async googleAuthCallback(
     @Req() req: Request,

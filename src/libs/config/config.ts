@@ -69,7 +69,7 @@ export function ApiResponseAndBody(type: string) {
         ApiBearerAuth(),
         HttpCode(HttpStatus.OK),
       );
-      
+
     case 'update-tokens':
       return applyDecorators(
         ApiResponse({
@@ -104,11 +104,11 @@ export function ApiResponseAndBody(type: string) {
         HttpCode(HttpStatus.CREATED),
       );
 
-    case 'meetup':
+    case 'users':
       return applyDecorators(
-        ApiExtraModels(PayloadDto, UserDto),
+        ApiExtraModels(UserDto),
         UseGuards(JwtAuthGuard),
-        ApiTags('meetup'),
+        ApiTags('users'),
         ApiBearerAuth(),
       );
 
@@ -171,6 +171,14 @@ export function ApiResponseAndBody(type: string) {
         HttpCode(HttpStatus.NO_CONTENT),
       );
 
+    case 'meetup':
+      return applyDecorators(
+        ApiExtraModels(PayloadDto),
+        UseGuards(JwtAuthGuard),
+        ApiTags('meetup'),
+        ApiBearerAuth(),
+      );
+
     case 'getAllMeetups':
       return applyDecorators(
         ApiResponse({
@@ -188,6 +196,7 @@ export function ApiResponseAndBody(type: string) {
         }),
         ApiResponse({ status: HttpStatus.NOT_FOUND, description: 'Not Found' }),
       );
+
     case 'createMeetup':
       return applyDecorators(
         ApiResponse({
