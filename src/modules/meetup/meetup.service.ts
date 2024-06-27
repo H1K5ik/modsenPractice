@@ -75,7 +75,7 @@ export class MeetupService {
         throw new BadRequestException('Wrong img id or img does not exist');
 
       await this.prisma.googleImages.delete({ where: { id: fileId } });
-      await this.googleDriveService.deleteImage(fileId);
+      // await this.googleDriveService.deleteImage(fileId);
 
       if (!file) throw new BadRequestException('Img did not upload');
 
