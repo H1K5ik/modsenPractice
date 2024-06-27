@@ -1,20 +1,11 @@
-import {
-  Body,
-  Controller,
-  Get,
-  Post,
-  Req,
-  Res,
-  UseGuards,
-} from '@nestjs/common';
+import { Body, Controller, Get, Post, Req, Res } from '@nestjs/common';
 import { ApiTags } from '@nestjs/swagger';
 import { Request, Response } from 'express';
 
 import { ApiResponseAndBody } from '@config/config';
-import { AuthDto, UserDto } from '@dto';
+import { AuthDto, GoogleReqUserDto, UserDto } from '@dto';
 
 import { AuthService } from './auth.service';
-import { GoogleGuard } from './guards';
 
 @ApiTags('auth')
 @Controller('auth')
@@ -52,14 +43,13 @@ export class AuthController {
   }
 
   @ApiResponseAndBody('google')
-  @UseGuards(GoogleGuard)
   @Get('google')
   async auth(): Promise<void> {}
 
   @ApiResponseAndBody('googleAuthCallback')
   @Get('google/callback')
   async googleAuthCallback(
-    @Req() req: Request,
+    @Req() req: GoogleReqUserDto,
     @Res({ passthrough: true }) res: Response,
   ): Promise<void> {
     const tokens = await this.authService.googleAuthCallback(req.user);

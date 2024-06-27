@@ -11,7 +11,7 @@ export class GoogleUserDto {
   email: string;
 
   @ApiProperty({
-    example: 'User || Admin',
+    example: 'Ur name',
     required: true,
   })
   @IsNotEmpty()

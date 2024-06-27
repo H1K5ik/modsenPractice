@@ -4,7 +4,7 @@ import {
   NotFoundException,
 } from '@nestjs/common';
 
-import { AuthDto, UserDto } from '@dto';
+import { AuthDto, GoogleUserDto, UserDto } from '@dto';
 import { tokenProps } from '@interfaces';
 import { PrismaService } from '@prisma/prisma.service';
 import { comparePassword, createTokens, hashPassword } from '@utils';
@@ -74,7 +74,7 @@ export class AuthService {
     return createTokens(payload, user.email);
   }
 
-  async googleAuthCallback(user): Promise<tokenProps> {
+  async googleAuthCallback(user: GoogleUserDto): Promise<tokenProps> {
     const userCompare = await this.prisma.user.findFirst({
       where: { email: user.email },
     });
