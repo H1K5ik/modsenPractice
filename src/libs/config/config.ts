@@ -9,6 +9,7 @@ import {
   ApiBearerAuth,
   ApiBody,
   ApiExtraModels,
+  ApiOAuth2,
   ApiResponse,
   ApiTags,
   DocumentBuilder,
@@ -17,7 +18,7 @@ import {
 
 import { Roles } from '@decorators/roles.decorator';
 import { AuthDto, ChangeMeetupDto, MeetupDto, PayloadDto, UserDto } from '@dto';
-import { JwtAuthGuard, RolesGuard } from '@modules/auth/guards';
+import { GoogleGuard, JwtAuthGuard, RolesGuard } from '@modules/auth/guards';
 
 export class Config {
   static initialize(app: INestApplication) {
@@ -25,6 +26,7 @@ export class Config {
       .setTitle('Meetup-api')
       .setVersion('3.0')
       .addBearerAuth()
+      .addOAuth2()
       .build();
     const document = SwaggerModule.createDocument(app, config);
     SwaggerModule.setup('api', app, document);
@@ -67,6 +69,7 @@ export function ApiResponseAndBody(type: string) {
         ApiBearerAuth(),
         HttpCode(HttpStatus.OK),
       );
+
     case 'update-tokens':
       return applyDecorators(
         ApiResponse({
@@ -79,9 +82,98 @@ export function ApiResponseAndBody(type: string) {
         HttpCode(HttpStatus.CREATED),
       );
 
+    case 'google':
+      return applyDecorators(
+        ApiResponse({
+          status: HttpStatus.CREATED,
+          description: 'User logged successfully',
+        }),
+        UseGuards(GoogleGuard),
+        ApiOAuth2(['google']),
+        HttpCode(HttpStatus.CREATED),
+      );
+
+    case 'googleAuthCallback':
+      return applyDecorators(
+        ApiResponse({
+          status: HttpStatus.CREATED,
+          description: 'User logged successfully',
+        }),
+        UseGuards(GoogleGuard),
+        ApiOAuth2(['google']),
+        HttpCode(HttpStatus.CREATED),
+      );
+
+    case 'users':
+      return applyDecorators(
+        ApiExtraModels(UserDto),
+        UseGuards(JwtAuthGuard),
+        ApiTags('users'),
+        ApiBearerAuth(),
+      );
+
+    case 'join':
+      return applyDecorators(
+        ApiResponse({
+          status: HttpStatus.CREATED,
+          description: 'You have successfully joined this meetup',
+        }),
+        ApiResponse({ status: HttpStatus.NOT_FOUND, description: 'Not Found' }),
+        ApiResponse({ status: HttpStatus.FORBIDDEN, description: 'Forbidden' }),
+        ApiResponse({
+          status: HttpStatus.BAD_REQUEST,
+          description: 'Bad request',
+        }),
+      );
+
+    case 'leave':
+      return applyDecorators(
+        ApiResponse({
+          status: HttpStatus.NO_CONTENT,
+          description: 'You have successfully leaved this meetup',
+        }),
+        ApiResponse({ status: HttpStatus.NOT_FOUND, description: 'Not Found' }),
+        ApiResponse({ status: HttpStatus.FORBIDDEN, description: 'Forbidden' }),
+        ApiResponse({
+          status: HttpStatus.BAD_REQUEST,
+          description: 'Bad request',
+        }),
+        HttpCode(HttpStatus.NO_CONTENT),
+      );
+
+    case 'addParticipant':
+      return applyDecorators(
+        ApiResponse({
+          status: HttpStatus.CREATED,
+          description: 'You have successfully added user to this meetup',
+        }),
+        ApiResponse({ status: HttpStatus.NOT_FOUND, description: 'Not Found' }),
+        ApiResponse({ status: HttpStatus.FORBIDDEN, description: 'Forbidden' }),
+        ApiResponse({
+          status: HttpStatus.BAD_REQUEST,
+          description: 'Bad request',
+        }),
+        HttpCode(HttpStatus.CREATED),
+      );
+
+    case 'removeParticipant':
+      return applyDecorators(
+        ApiResponse({
+          status: HttpStatus.NO_CONTENT,
+          description: 'You have successfully added user to this meetup',
+        }),
+        ApiResponse({ status: HttpStatus.NOT_FOUND, description: 'Not Found' }),
+        ApiResponse({ status: HttpStatus.FORBIDDEN, description: 'Forbidden' }),
+        ApiResponse({
+          status: HttpStatus.BAD_REQUEST,
+          description: 'Bad request',
+        }),
+        HttpCode(HttpStatus.NO_CONTENT),
+      );
+
     case 'meetup':
       return applyDecorators(
-        ApiExtraModels(PayloadDto, UserDto),
+        ApiExtraModels(PayloadDto),
         UseGuards(JwtAuthGuard),
         ApiTags('meetup'),
         ApiBearerAuth(),
@@ -104,6 +196,7 @@ export function ApiResponseAndBody(type: string) {
         }),
         ApiResponse({ status: HttpStatus.NOT_FOUND, description: 'Not Found' }),
       );
+
     case 'createMeetup':
       return applyDecorators(
         ApiResponse({

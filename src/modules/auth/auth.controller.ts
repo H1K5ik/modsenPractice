@@ -3,7 +3,7 @@ import { ApiTags } from '@nestjs/swagger';
 import { Request, Response } from 'express';
 
 import { ApiResponseAndBody } from '@config/config';
-import { AuthDto, UserDto } from '@dto';
+import { AuthDto, GoogleReqUserDto, UserDto } from '@dto';
 
 import { AuthService } from './auth.service';
 
@@ -20,7 +20,10 @@ export class AuthController {
 
   @ApiResponseAndBody('login')
   @Post('login')
-  async login(@Body() dto: AuthDto, @Res({ passthrough: true }) res: Response) {
+  async login(
+    @Body() dto: AuthDto,
+    @Res({ passthrough: true }) res: Response,
+  ): Promise<void> {
     const tokens = await this.authService.login(dto);
     res.cookie('accessToken', tokens.accessToken, { httpOnly: true });
     res.cookie('refreshToken', tokens.refreshToken, { httpOnly: true });
@@ -28,10 +31,28 @@ export class AuthController {
 
   @ApiResponseAndBody('update-tokens')
   @Get('update-tokens')
-  async update(@Req() req: Request, @Res({ passthrough: true }) res: Response) {
+  async update(
+    @Req() req: Request,
+    @Res({ passthrough: true }) res: Response,
+  ): Promise<void> {
     const tokens = await this.authService.updateTokens(
       req.cookies.refreshToken,
     );
+    res.cookie('accessToken', tokens.accessToken, { httpOnly: true });
+    res.cookie('refreshToken', tokens.refreshToken, { httpOnly: true });
+  }
+
+  @ApiResponseAndBody('google')
+  @Get('google')
+  async auth(): Promise<void> {}
+
+  @ApiResponseAndBody('googleAuthCallback')
+  @Get('google/callback')
+  async googleAuthCallback(
+    @Req() req: GoogleReqUserDto,
+    @Res({ passthrough: true }) res: Response,
+  ): Promise<void> {
+    const tokens = await this.authService.googleAuthCallback(req.user);
     res.cookie('accessToken', tokens.accessToken, { httpOnly: true });
     res.cookie('refreshToken', tokens.refreshToken, { httpOnly: true });
   }

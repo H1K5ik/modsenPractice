@@ -13,6 +13,7 @@ import { pagination } from '@utils';
 @Injectable()
 export class MeetupService {
   constructor(private readonly prisma: PrismaService) {}
+
   async getAllMeetups(query: queryProps): Promise<MeetupDto[]> {
     try {
       return pagination(query);

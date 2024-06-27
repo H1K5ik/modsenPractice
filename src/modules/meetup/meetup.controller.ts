@@ -11,7 +11,7 @@ import {
 
 import { ApiResponseAndBody } from '@config/config';
 import { GetUserId } from '@decorators/userid.decorator';
-import { ChangeMeetupDto, MeetupDto } from '@dto';
+import { ChangeMeetupDto, MeetupDto, UserDto } from '@dto';
 import { queryProps } from '@interfaces';
 
 import { MeetupService } from './meetup.service';
