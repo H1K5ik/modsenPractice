@@ -1,6 +1,6 @@
 generator client {
   provider = "prisma-client-js"
-  output = "../node_modules/.prisma/client"
+  output   = "../node_modules/.prisma/client"
 }
 
 datasource db {
@@ -30,6 +30,11 @@ model Meetup {
   authorId    Int?
   author      User?    @relation("MeetupAuthor", fields: [authorId], references: [id])
   members     User[]   @relation("MeetupMembers")
+}
+
+model GoogleImages {
+  id     String      @id 
+  images String
 }
 
 enum Role {
