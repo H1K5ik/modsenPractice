@@ -38,10 +38,10 @@ export class MeetupController {
     return await this.meetupService.getImage();
   }
 
-  @Delete('delete-image/:id')
-  async deleteImage(@Param('id') id: string): Promise<void> {
-    return await this.meetupService.deleteImage(id);
-  }
+  // @Delete('delete-image/:id')
+  // async deleteImage(@Param('id') id: string): Promise<void> {
+  //   return await this.meetupService.deleteImage(id);
+  // }
 
   @Put('change-image/:id')
   @UseInterceptors(FileInterceptor('file'))
