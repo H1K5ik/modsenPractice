@@ -46,21 +46,21 @@ export class MeetupService {
     }
   }
 
-  async deleteImage(fileId: string): Promise<void> {
-    try {
-      const thisImage = await this.prisma.googleImages.findUnique({
-        where: { id: fileId },
-      });
+  // async deleteImage(fileId: string): Promise<void> {
+  //   try {
+  //     const thisImage = await this.prisma.googleImages.findUnique({
+  //       where: { id: fileId },
+  //     });
 
-      if (!thisImage)
-        throw new BadRequestException('Wrong img id or img does not exist');
+  //     if (!thisImage)
+  //       throw new BadRequestException('Wrong img id or img does not exist');
 
-      await this.prisma.googleImages.delete({ where: { id: fileId } });
-      await this.googleDriveService.deleteImage(fileId);
-    } catch (e) {
-      throw new Error(e);
-    }
-  }
+  //     await this.prisma.googleImages.delete({ where: { id: fileId } });
+  //     await this.googleDriveService.deleteImage(fileId);
+  //   } catch (e) {
+  //     throw new Error(e);
+  //   }
+  // }
 
   async changeImage(
     fileId: string,
