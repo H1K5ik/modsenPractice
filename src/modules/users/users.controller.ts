@@ -1,8 +1,19 @@
-import { Controller, Delete, Param, Post, Query } from '@nestjs/common';
+import {
+  Controller,
+  Delete,
+  Get,
+  Param,
+  Post,
+  Put,
+  Query,
+  UploadedFile,
+  UseInterceptors,
+} from '@nestjs/common';
+import { FileInterceptor } from '@nestjs/platform-express';
 
 import { ApiResponseAndBody } from '@config/config';
 import { GetUserId } from '@decorators/userid.decorator';
-import { UserDto } from '@dto';
+import { ImageUserDto, UserDto } from '@dto';
 
 import { UsersService } from './users.service';
 
@@ -11,6 +22,37 @@ import { UsersService } from './users.service';
 export class UsersController {
   constructor(private readonly usersService: UsersService) {}
 
+  @ApiResponseAndBody('upload')
+  @Post('upload')
+  @UseInterceptors(FileInterceptor('file'))
+  async uploadImage(
+    @UploadedFile() file: Express.Multer.File,
+    @GetUserId('id') userId: number,
+  ): Promise<ImageUserDto> {
+    return await this.usersService.uploadImage(file, userId);
+  }
+
+  @ApiResponseAndBody('getImage')
+  @Get('get-image')
+  async getImage(@GetUserId('id') userId: number): Promise<string> {
+    return await this.usersService.getImage(userId);
+  }
+
+  @ApiResponseAndBody('deleteImage')
+  @Delete('delete-image')
+  async deleteImage(@GetUserId('id') userId: number): Promise<void> {
+    return await this.usersService.deleteImage(userId);
+  }
+
+  @ApiResponseAndBody('changeImage')
+  @Put('change-image')
+  @UseInterceptors(FileInterceptor('file'))
+  async changeImage(
+    @GetUserId('id') userId: number,
+    @UploadedFile() file: Express.Multer.File,
+  ): Promise<ImageUserDto> {
+    return await this.usersService.changeImage(userId, file);
+  }
   @ApiResponseAndBody('join')
   @Post(':id/join')
   async joinMeetup(

@@ -25,32 +25,7 @@ import { MeetupService } from './meetup.service';
 export class MeetupController {
   constructor(private readonly meetupService: MeetupService) {}
 
-  @Get('upload')
-  @UseInterceptors(FileInterceptor('file'))
-  async uploadImage(
-    @UploadedFile() file: Express.Multer.File,
-  ): Promise<imageProps> {
-    return await this.meetupService.uploadImage(file);
-  }
-
-  @Get('get-images')
-  async getImage(): Promise<imageProps[]> {
-    return await this.meetupService.getImage();
-  }
-
-  // @Delete('delete-image/:id')
-  // async deleteImage(@Param('id') id: string): Promise<void> {
-  //   return await this.meetupService.deleteImage(id);
-  // }
-
-  @Put('change-image/:id')
-  @UseInterceptors(FileInterceptor('file'))
-  async changeImage(
-    @Param('id') id: string,
-    @UploadedFile() file: Express.Multer.File,
-  ): Promise<imageProps> {
-    return await this.meetupService.changeImage(id, file);
-  }
+ 
 
   @ApiResponseAndBody('getAllMeetups')
   @Get()
