@@ -1,7 +1,7 @@
 import { Prisma } from '@prisma/client';
 import * as bcrypt from 'bcrypt';
 
-import { AuthDto } from '@dto';
+import { AuthDto } from '@libs/dto';
 
 const saltOrRounds = 10;
 

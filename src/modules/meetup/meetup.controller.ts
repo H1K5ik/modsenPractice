@@ -9,10 +9,10 @@ import {
   Query,
 } from '@nestjs/common';
 
-import { ApiResponseAndBody } from '@config/config';
-import { GetUserId } from '@decorators/userid.decorator';
-import { ChangeMeetupDto, MeetupDto } from '@dto';
-import { queryProps } from '@interfaces';
+import { ApiResponseAndBody } from '@libs/config';
+import { GetUserId } from '@libs/decorators';
+import { ChangeMeetupDto, MeetupDto } from '@libs/dto';
+import { queryProps } from '@libs/interfaces';
 
 import { MeetupService } from './meetup.service';
 

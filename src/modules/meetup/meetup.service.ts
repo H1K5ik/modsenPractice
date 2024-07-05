@@ -5,10 +5,10 @@ import {
   NotFoundException,
 } from '@nestjs/common';
 
-import { ChangeMeetupDto, MeetupDto } from '@dto';
-import { queryProps } from '@interfaces';
-import { PrismaService } from '@prisma/prisma.service';
-import { pagination } from '@utils';
+import { ChangeMeetupDto, MeetupDto } from '@libs/dto';
+import { queryProps } from '@libs/interfaces';
+import { PrismaService } from '@libs/prisma/prisma.service';
+import { pagination } from '@libs/utils';
 
 @Injectable()
 export class MeetupService {

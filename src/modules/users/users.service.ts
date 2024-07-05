@@ -6,8 +6,8 @@ import {
 } from '@nestjs/common';
 import { GoogleDriveService } from 'nestjs-googledrive-upload';
 
-import { ImageUserDto, UserDto } from '@dto';
-import { PrismaService } from '@prisma/prisma.service';
+import { ImageUserDto, UserDto } from '@libs/dto';
+import { PrismaService } from '@libs/prisma/prisma.service';
 
 @Injectable()
 export class UsersService {

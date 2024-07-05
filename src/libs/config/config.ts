@@ -16,9 +16,15 @@ import {
   SwaggerModule,
 } from '@nestjs/swagger';
 
-import { Roles } from '@decorators/roles.decorator';
-import { AuthDto, ChangeMeetupDto, MeetupDto, PayloadDto, UserDto } from '@dto';
-import { GoogleGuard, JwtAuthGuard, RolesGuard } from '@modules/auth/guards';
+import { Roles } from '@libs/decorators';
+import {
+  AuthDto,
+  ChangeMeetupDto,
+  MeetupDto,
+  PayloadDto,
+  UserDto,
+} from '@libs/dto';
+import { GoogleGuard, JwtAuthGuard, RolesGuard } from '../../modules/auth/guards';
 
 export class Config {
   static initialize(app: INestApplication) {

@@ -4,7 +4,7 @@ import {
   GoogleDriveModule,
 } from 'nestjs-googledrive-upload';
 
-import { PrismaService } from '@prisma/prisma.service';
+import { PrismaService } from '@libs/prisma/prisma.service';
 import * as config from 'src/libs/config/google.config.json';
 
 import { UsersController } from './users.controller';

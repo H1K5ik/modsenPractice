@@ -1,22 +1,25 @@
 import { Test, TestingModule } from '@nestjs/testing';
 
-import { AuthDto, UserDto } from '@dto';
+import { AuthDto, UserDto } from '@libs/dto';
 
 import { AuthController } from './auth.controller';
 import { AuthService } from './auth.service';
+import { PrismaService } from '@libs/prisma/prisma.service';
 
 describe('AuthController', () => {
   let controller: AuthController;
   let service: AuthService;
+  let prismaService: PrismaService;
 
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
       controllers: [AuthController],
-      providers: [AuthService],
+      providers: [AuthService, PrismaService],
     }).compile();
 
     controller = module.get<AuthController>(AuthController);
     service = module.get<AuthService>(AuthService);
+    prismaService = module.get<PrismaService>(PrismaService);
   });
 
   it('should register a new user', async () => {

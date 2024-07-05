@@ -4,10 +4,10 @@ import {
   NotFoundException,
 } from '@nestjs/common';
 
-import { AuthDto, GoogleUserDto, UserDto } from '@dto';
-import { tokenProps } from '@interfaces';
-import { PrismaService } from '@prisma/prisma.service';
-import { comparePassword, createTokens, hashPassword } from '@utils';
+import { AuthDto, GoogleUserDto, UserDto } from '@libs/dto';
+import { tokenProps } from '@libs/interfaces';
+import { PrismaService } from '@libs/prisma/prisma.service';
+import { comparePassword, createTokens, hashPassword } from '@libs/utils';
 
 @Injectable()
 export class AuthService {

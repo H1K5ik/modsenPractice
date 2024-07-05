@@ -11,9 +11,9 @@ import {
 } from '@nestjs/common';
 import { FileInterceptor } from '@nestjs/platform-express';
 
-import { ApiResponseAndBody } from '@config/config';
-import { GetUserId } from '@decorators/userid.decorator';
-import { ImageUserDto, UserDto } from '@dto';
+import { ApiResponseAndBody } from '@libs/config';
+import { GetUserId } from '@libs/decorators';
+import { ImageUserDto, UserDto } from '@libs/dto';
 
 import { UsersService } from './users.service';
 

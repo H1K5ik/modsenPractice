@@ -1,6 +1,6 @@
 import { Module } from '@nestjs/common';
 
-import { PrismaService } from '@prisma/prisma.service';
+import { PrismaService } from '@libs/prisma/prisma.service';
 
 import { MeetupController } from './meetup.controller';
 import { MeetupService } from './meetup.service';

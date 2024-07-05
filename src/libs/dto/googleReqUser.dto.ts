@@ -1,4 +1,4 @@
-import { GoogleUserDto } from '@dto';
+import { GoogleUserDto } from './googleUser.dto';
 
 export class GoogleReqUserDto extends Request {
   user: GoogleUserDto;

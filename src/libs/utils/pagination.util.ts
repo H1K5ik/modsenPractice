@@ -1,8 +1,8 @@
 import { BadRequestException } from '@nestjs/common';
 import { PrismaClient } from '@prisma/client';
 
-import { MeetupDto } from '@dto';
-import { queryProps } from '@interfaces';
+import { MeetupDto } from '@libs/dto';
+import { queryProps } from '@libs/interfaces';
 
 const prisma = new PrismaClient();
 export async function pagination(query: queryProps): Promise<MeetupDto[]> {
