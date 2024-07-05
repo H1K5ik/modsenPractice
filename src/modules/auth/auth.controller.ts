@@ -2,8 +2,8 @@ import { Body, Controller, Get, Post, Req, Res } from '@nestjs/common';
 import { ApiTags } from '@nestjs/swagger';
 import { Request, Response } from 'express';
 
-import { ApiResponseAndBody } from '@config/config';
-import { AuthDto, GoogleReqUserDto, UserDto } from '@dto';
+import { ApiResponseAndBody } from '@libs/config';
+import { AuthDto, GoogleReqUserDto, UserDto } from '@libs/dto';
 
 import { AuthService } from './auth.service';
 

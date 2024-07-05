@@ -4,92 +4,15 @@ import {
   Injectable,
   NotFoundException,
 } from '@nestjs/common';
-import { GoogleDriveService } from 'nestjs-googledrive-upload';
 
-import { ChangeMeetupDto, MeetupDto } from '@dto';
-import { imageProps, queryProps } from '@interfaces';
-import { PrismaService } from '@prisma/prisma.service';
-import { pagination } from '@utils';
+import { ChangeMeetupDto, MeetupDto } from '@libs/dto';
+import { queryProps } from '@libs/interfaces';
+import { PrismaService } from '@libs/prisma/prisma.service';
+import { pagination } from '@libs/utils';
 
 @Injectable()
 export class MeetupService {
-  constructor(
-    private readonly prisma: PrismaService,
-    private readonly googleDriveService: GoogleDriveService,
-  ) {}
-
-  async uploadImage(file: Express.Multer.File): Promise<imageProps> {
-    try {
-      if (!file) throw new BadRequestException('Img did not upload');
-
-      const link = await this.googleDriveService.uploadImage(file);
-      const id = link.split('id=').at(1);
-      await this.prisma.googleImages.create({
-        data: { id, images: link },
-      });
-      const img = await this.prisma.googleImages.findUnique({ where: { id } });
-      return img;
-    } catch (e) {
-      throw new Error(e);
-    }
-  }
-
-  async getImage(): Promise<imageProps[]> {
-    try {
-      const img = await this.prisma.googleImages.findMany();
-
-      if (!img) throw new BadRequestException(`Img does not found`);
-
-      return img;
-    } catch (e) {
-      throw new Error(e);
-    }
-  }
-
-  // async deleteImage(fileId: string): Promise<void> {
-  //   try {
-  //     const thisImage = await this.prisma.googleImages.findUnique({
-  //       where: { id: fileId },
-  //     });
-
-  //     if (!thisImage)
-  //       throw new BadRequestException('Wrong img id or img does not exist');
-
-  //     await this.prisma.googleImages.delete({ where: { id: fileId } });
-  //     await this.googleDriveService.deleteImage(fileId);
-  //   } catch (e) {
-  //     throw new Error(e);
-  //   }
-  // }
-
-  async changeImage(
-    fileId: string,
-    file: Express.Multer.File,
-  ): Promise<imageProps> {
-    try {
-      const thisImage = await this.prisma.googleImages.findUnique({
-        where: { id: fileId },
-      });
-
-      if (!thisImage)
-        throw new BadRequestException('Wrong img id or img does not exist');
-
-      await this.prisma.googleImages.delete({ where: { id: fileId } });
-      await this.googleDriveService.deleteImage(fileId);
-
-      if (!file) throw new BadRequestException('Img did not upload');
-
-      const link = await this.googleDriveService.uploadImage(file);
-      const id = link.split('id=').at(1);
-      await this.prisma.googleImages.create({
-        data: { id, images: link },
-      });
-      const img = await this.prisma.googleImages.findUnique({ where: { id } });
-      return img;
-    } catch (e) {
-      throw new Error(e);
-    }
-  }
+  constructor(private readonly prisma: PrismaService) {}
 
   async getAllMeetups(query: queryProps): Promise<MeetupDto[]> {
     try {

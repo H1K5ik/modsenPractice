@@ -10,14 +10,15 @@ datasource db {
 }
 
 model User {
-  id            Int      @id @default(autoincrement())
-  email         String   @unique
-  name          String?
-  Token         String?
-  roles         Role     @default(User)
-  password      String?
-  meetup        Meetup[] @relation("MeetupAuthor")
-  joinedMeetups Meetup[] @relation("MeetupMembers")
+  id             Int      @id @default(autoincrement())
+  email          String   @unique
+  name           String?
+  Token          String?
+  roles          Role     @default(User)
+  password       String?
+  meetup         Meetup[] @relation("MeetupAuthor")
+  joinedMeetups  Meetup[] @relation("MeetupMembers")
+  profileImage   String?
 }
 
 model Meetup {
@@ -30,11 +31,6 @@ model Meetup {
   authorId    Int?
   author      User?    @relation("MeetupAuthor", fields: [authorId], references: [id])
   members     User[]   @relation("MeetupMembers")
-}
-
-model GoogleImages {
-  id     String      @id 
-  images String
 }
 
 enum Role {

@@ -13,7 +13,8 @@
     "start:debug": "nest start --debug --watch",
     "start:prod": "node dist/src/main",
     "lint": "eslint \"{src,apps,libs,prisma}/**/*.ts\" --fix",
-    "seed": "ts-node prisma/seed.ts"
+    "seed": "ts-node prisma/seed.ts",
+    "test": "jest"
   },
   "dependencies": {
     "@maxim_mazurok/gapi.client.drive-v3": "^0.0.20240604",
@@ -25,10 +26,13 @@
     "@nestjs/platform-express": "^10.0.0",
     "@nestjs/swagger": "^7.3.1",
     "@prisma/client": "^5.15.0",
+    "@vercel/postgres": "^0.9.0",
     "bcrypt": "^5.1.1",
     "class-transformer": "^0.5.1",
     "class-validator": "^0.14.1",
     "cookie-parser": "^1.4.6",
+    "dotenv": "^16.4.5",
+    "jest-config": "^29.7.0",
     "nestjs-googledrive-upload": "^2.0.0",
     "passport": "^0.7.0",
     "passport-google-oauth20": "^2.0.0",
@@ -71,12 +75,16 @@
     "typescript": "^5.1.3"
   },
   "jest": {
+    "moduleNameMapper": {
+      "@src/(.*)": "<rootDir>/src/$1",
+      "@libs/(.*)": "<rootDir>/src/libs/$1"
+    },
     "moduleFileExtensions": [
       "js",
       "json",
       "ts"
     ],
-    "rootDir": "src",
+    "rootDir": "./",
     "testRegex": ".*\\.spec\\.ts$",
     "transform": {
       "^.+\\.(t|j)s$": "ts-jest"

@@ -4,13 +4,79 @@ import {
   Injectable,
   NotFoundException,
 } from '@nestjs/common';
+import { GoogleDriveService } from 'nestjs-googledrive-upload';
 
-import { UserDto } from '@dto';
-import { PrismaService } from '@prisma/prisma.service';
+import { ImageUserDto, UserDto } from '@libs/dto';
+import { PrismaService } from '@libs/prisma/prisma.service';
 
 @Injectable()
 export class UsersService {
-  constructor(private readonly prisma: PrismaService) {}
+  constructor(
+    private readonly prisma: PrismaService,
+    private readonly googleDriveService: GoogleDriveService,
+  ) {}
+
+  async uploadImage(
+    file: Express.Multer.File,
+    userId: number,
+  ): Promise<ImageUserDto> {
+    if (!file) throw new BadRequestException('Img did not upload');
+
+    const user = await this.prisma.user.findUnique({ where: { id: userId } });
+
+    if (user.profileImage) throw new BadRequestException('Img already exists');
+
+    const link = await this.googleDriveService.uploadImage(file);
+
+    const img = await this.prisma.user.update({
+      where: { id: userId },
+      data: { profileImage: link },
+      select: {
+        id: true,
+        email: true,
+        name: true,
+        profileImage: true,
+      },
+    });
+    return img;
+  }
+
+  async getImage(id: number): Promise<string> {
+    const user = await this.prisma.user.findUnique({
+      where: { id },
+    });
+
+    if (!user) throw new BadRequestException(`Img does not found`);
+
+    return user.profileImage;
+  }
+
+  async deleteImage(userId: number): Promise<void> {
+    await this.prisma.user.update({
+      where: { id: userId },
+      data: { profileImage: '' },
+    });
+  }
+
+  async changeImage(
+    userId: number,
+    file: Express.Multer.File,
+  ): Promise<ImageUserDto> {
+    if (!file) throw new BadRequestException('Img did not upload');
+
+    const link = await this.googleDriveService.uploadImage(file);
+    const img = await this.prisma.user.update({
+      where: { id: userId },
+      data: { profileImage: link },
+      select: {
+        id: true,
+        email: true,
+        name: true,
+        profileImage: true,
+      },
+    });
+    return img;
+  }
 
   async addMember(meetupId: number, userId: number): Promise<UserDto[]> {
     const thisMeetup = await this.prisma.meetup.findFirst({

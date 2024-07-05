@@ -3,7 +3,7 @@ import { Reflector } from '@nestjs/core';
 import { JwtService } from '@nestjs/jwt';
 import { Role } from '@prisma/client';
 
-import { ROLES_KEY } from '@decorators/roles.decorator';
+import { ROLES_KEY } from '@libs/decorators';
 
 @Injectable()
 export class RolesGuard implements CanActivate {

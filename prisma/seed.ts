@@ -1,7 +1,7 @@
 import { faker } from '@faker-js/faker';
 import { PrismaClient } from '@prisma/client';
 
-import { seedProps } from '@interfaces/seed.interface';
+import { seedProps } from '@libs/interfaces/seed.interface';
 
 import { hashPassword } from '../src/libs/utils';
 

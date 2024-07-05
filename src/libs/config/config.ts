@@ -16,9 +16,15 @@ import {
   SwaggerModule,
 } from '@nestjs/swagger';
 
-import { Roles } from '@decorators/roles.decorator';
-import { AuthDto, ChangeMeetupDto, MeetupDto, PayloadDto, UserDto } from '@dto';
-import { GoogleGuard, JwtAuthGuard, RolesGuard } from '@modules/auth/guards';
+import { Roles } from '@libs/decorators';
+import {
+  AuthDto,
+  ChangeMeetupDto,
+  MeetupDto,
+  PayloadDto,
+  UserDto,
+} from '@libs/dto';
+import { GoogleGuard, JwtAuthGuard, RolesGuard } from '../../modules/auth/guards';
 
 export class Config {
   static initialize(app: INestApplication) {
@@ -112,6 +118,67 @@ export function ApiResponseAndBody(type: string) {
         ApiBearerAuth(),
       );
 
+    case 'upload':
+      return applyDecorators(
+        ApiResponse({
+          status: HttpStatus.CREATED,
+          description: 'You have successfully uploaded image',
+        }),
+        ApiResponse({
+          status: HttpStatus.BAD_REQUEST,
+          description: 'Bad request',
+        }),
+        ApiResponse({
+          status: HttpStatus.UNAUTHORIZED,
+          description: 'UNAUTHORIZED',
+        }),
+        HttpCode(HttpStatus.CREATED),
+      );
+
+    case 'getImage':
+      return applyDecorators(
+        ApiResponse({
+          status: HttpStatus.OK,
+          description: 'You have successfully got the image',
+        }),
+        ApiResponse({
+          status: HttpStatus.UNAUTHORIZED,
+          description: 'UNAUTHORIZED',
+        }),
+        HttpCode(HttpStatus.OK),
+      );
+
+    case 'deleteImage':
+      return applyDecorators(
+        ApiResponse({
+          status: HttpStatus.NO_CONTENT,
+          description: 'The image has been successfully deleted.',
+        }),
+        ApiResponse({
+          status: HttpStatus.UNAUTHORIZED,
+          description: 'UNAUTHORIZED',
+        }),
+        ApiResponse({
+          status: HttpStatus.BAD_REQUEST,
+          description: 'Bad request',
+        }),
+        HttpCode(HttpStatus.NO_CONTENT),
+      );
+
+    case 'changeImage':
+      return applyDecorators(
+        ApiResponse({
+          status: HttpStatus.CREATED,
+          description: 'The image has been successfully deleted.',
+        }),
+        ApiResponse({
+          status: HttpStatus.UNAUTHORIZED,
+          description: 'UNAUTHORIZED',
+        }),
+        ApiResponse({ status: HttpStatus.FORBIDDEN, description: 'Forbidden' }),
+        HttpCode(HttpStatus.CREATED),
+      );
+
     case 'join':
       return applyDecorators(
         ApiResponse({
@@ -182,7 +249,7 @@ export function ApiResponseAndBody(type: string) {
     case 'getAllMeetups':
       return applyDecorators(
         ApiResponse({
-          status: HttpStatus.OK,
+          status: HttpStatus.NO_CONTENT,
           description: 'Meetups has been successfully found.',
         }),
         ApiResponse({ status: HttpStatus.NOT_FOUND, description: 'Not Found' }),

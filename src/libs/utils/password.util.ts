@@ -1,8 +1,9 @@
 import { Prisma } from '@prisma/client';
 import * as bcrypt from 'bcrypt';
 
-import { saltOrRounds } from '@constants';
-import { AuthDto } from '@dto';
+import { AuthDto } from '@libs/dto';
+
+const saltOrRounds = 10;
 
 export async function hashPassword(password: string): Promise<string> {
   return await bcrypt.hash(password, saltOrRounds);

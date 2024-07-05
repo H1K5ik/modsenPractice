@@ -19,53 +19,11 @@
     "forceConsistentCasingInFileNames": false,
     "noFallthroughCasesInSwitch": false,
     "paths": {
-      "@decorators": [
-        "src/libs/decorators"
+      "@libs": [
+        "src/libs"
       ],
-      "@decorators/*": [
-        "src/libs/decorators/*"
-      ],
-      "@config": [
-        "src/libs/config"
-      ],
-      "@config/*": [
-        "src/libs/config/*"
-      ],
-      "@prisma": [
-        "src/libs/prisma"
-      ],
-      "@prisma/*": [
-        "src/libs/prisma/*"
-      ],
-      "@modules": [
-        "src/modules"
-      ],
-      "@modules/*": [
-        "src/modules/*"
-      ],
-      "@dto": [
-        "src/libs/dto"
-      ],
-      "@dto/*": [
-        "src/libs/dto/*"
-      ],
-      "@constants": [
-        "src/libs/constants"
-      ],
-      "@constants/*": [
-        "src/libs/constants/*"
-      ],
-      "@utils": [
-        "src/libs/utils"
-      ],
-      "@utils/*": [
-        "src/libs/utils/*"
-      ],
-      "@interfaces": [
-        "src/libs/interfaces"
-      ],
-      "@interfaces/*": [
-        "src/libs/interfaces/*"
+      "@libs/*": [
+        "src/libs/*"
       ],
     }
   }
