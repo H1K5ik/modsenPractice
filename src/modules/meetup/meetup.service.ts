@@ -4,10 +4,9 @@ import {
   Injectable,
   NotFoundException,
 } from '@nestjs/common';
-import { GoogleDriveService } from 'nestjs-googledrive-upload';
 
 import { ChangeMeetupDto, MeetupDto } from '@dto';
-import { imageProps, queryProps } from '@interfaces';
+import { queryProps } from '@interfaces';
 import { PrismaService } from '@prisma/prisma.service';
 import { pagination } from '@utils';
 

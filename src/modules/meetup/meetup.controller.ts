@@ -6,17 +6,13 @@ import {
   Param,
   Patch,
   Post,
-  Put,
   Query,
-  UploadedFile,
-  UseInterceptors,
 } from '@nestjs/common';
-import { FileInterceptor } from '@nestjs/platform-express';
 
 import { ApiResponseAndBody } from '@config/config';
 import { GetUserId } from '@decorators/userid.decorator';
 import { ChangeMeetupDto, MeetupDto } from '@dto';
-import { imageProps, queryProps } from '@interfaces';
+import { queryProps } from '@interfaces';
 
 import { MeetupService } from './meetup.service';
 
@@ -24,8 +20,6 @@ import { MeetupService } from './meetup.service';
 @Controller('meetup')
 export class MeetupController {
   constructor(private readonly meetupService: MeetupService) {}
-
- 
 
   @ApiResponseAndBody('getAllMeetups')
   @Get()

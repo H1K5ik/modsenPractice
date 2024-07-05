@@ -2,10 +2,10 @@ import { JwtService } from '@nestjs/jwt';
 import { PrismaClient } from '@prisma/client';
 import * as bcrypt from 'bcrypt';
 
-import { saltOrRounds } from '@constants';
 import { PayloadDto } from '@dto';
 import { tokenProps } from '@interfaces';
 
+const saltOrRounds = 10;
 const jwtService = new JwtService();
 const prisma = new PrismaClient();
 export async function createTokens(
