@@ -54,8 +54,6 @@ $ npm install
 ## Running the app
 
 ```bash
-# install node_modules
-$ npm i
 
 # development
 $ npm run start
